@@ -76,4 +76,9 @@ public class ProductController {
         return null;
     }
 
+    public ResultSet autoGenerateID() throws SQLException, ClassNotFoundException {
+        ResultSet rst = CrudUtil.execute( "SELECT id FROM product ORDER BY id DESC LIMIT 1" );
+        return rst;
+    }
+
 }

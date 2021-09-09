@@ -21,6 +21,7 @@ import lk.ijse.supermarket.view.tm.ProductTM;
 
 import java.awt.*;
 import java.io.IOException;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -61,6 +62,7 @@ public class ManageProductFromController {
         colOption.setStyle("-fx-alignment:center");
 
         getAllProduct();
+        generateId();
 
         tblManageProduct.getSelectionModel().selectedItemProperty().
                 addListener((observable, oldValue, newValue) -> {
@@ -152,6 +154,7 @@ public class ManageProductFromController {
             if (new ProductController ().saveProduct ( product )){
                 new Alert ( Alert.AlertType.CONFIRMATION,"Saved @!" ).show ();
                 getAllProduct ();
+                generateId();
             }else {
                 new Alert ( Alert.AlertType.ERROR,"Failed @!" ).show ();
             }
@@ -163,6 +166,11 @@ public class ManageProductFromController {
     }
 
     public void btnClearOnAction ( ActionEvent actionEvent ) {
+        txtProductName.setText( "" );
+        txtProductDescription.setText( "" );
+        txtSpec.setText( "" );
+        txtDisplayName.setText( "" );
+        txtBrands.setText( "" );
     }
 
     public void btnUpdateOnAction ( ActionEvent actionEvent ) {
@@ -208,6 +216,32 @@ public class ManageProductFromController {
             throwables.printStackTrace ( );
         } catch ( ClassNotFoundException e ) {
             e.printStackTrace ( );
+        }
+    }
+
+    public void generateId(){
+        try {
+            ResultSet resultSet = new ProductController( ).autoGenerateID( );
+            if (resultSet.next()){
+                String oldId = resultSet.getString( 1 );
+                String substring = oldId.substring( 1 , 4 );
+                int intId = Integer.parseInt( substring );
+
+                intId = intId + 1;
+                if (intId<10){
+                    txtProductId.setText( "P00"+intId );
+                }else if (intId<100){
+                    txtProductId.setText( "P0"+intId );
+                }else if (intId<1000){
+                    txtProductId.setText( "P"+intId );
+                }
+            }else {
+                txtProductId.setText( "P001" );
+            }
+        } catch ( SQLException throwables ) {
+            throwables.printStackTrace( );
+        } catch ( ClassNotFoundException e ) {
+            e.printStackTrace( );
         }
     }
 

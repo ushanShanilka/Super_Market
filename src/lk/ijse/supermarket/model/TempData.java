@@ -10,12 +10,12 @@ public class TempData {
     private String cusCity;
     private String cusProvince;
     private int cusContact;
-    private String cashierName;
+    private String cashierId;
 
     public TempData ( ) {
     }
 
-    public TempData ( String orderId , String orderDate , String cusId , String cusType , String cusName , String cusAddress , String cusCity , String cusProvince , int cusContact , String cashierName ) {
+    public TempData ( String orderId , String orderDate , String cusId , String cusType , String cusName , String cusAddress , String cusCity , String cusProvince , int cusContact , String cashierId ) {
         this.orderId = orderId;
         this.orderDate = orderDate;
         this.cusId = cusId;
@@ -25,7 +25,7 @@ public class TempData {
         this.cusCity = cusCity;
         this.cusProvince = cusProvince;
         this.cusContact = cusContact;
-        this.cashierName = cashierName;
+        this.cashierId = cashierId;
     }
 
     public String getOrderId ( ) {
@@ -100,12 +100,12 @@ public class TempData {
         this.cusContact = cusContact;
     }
 
-    public String getCashierName ( ) {
-        return cashierName;
+    public String getCashierId ( ) {
+        return cashierId;
     }
 
-    public void setCashierName ( String cashierName ) {
-        this.cashierName = cashierName;
+    public void setCashierId ( String cashierId ) {
+        this.cashierId = cashierId;
     }
 
     @Override
@@ -120,7 +120,7 @@ public class TempData {
                ", cusCity='" + cusCity + '\'' +
                ", cusProvince='" + cusProvince + '\'' +
                ", cusContact=" + cusContact +
-               ", cashierName='" + cashierName + '\'' +
+               ", cashierId='" + cashierId + '\'' +
                '}';
     }
 }

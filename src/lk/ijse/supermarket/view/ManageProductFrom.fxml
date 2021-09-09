@@ -17,7 +17,7 @@
             <Font name="Arial Black" size="31.0" />
          </font>
       </Label>
-      <JFXTextField fx:id="txtProductId" layoutX="43.0" layoutY="90.0" onAction="#searchProductOnAction" prefHeight="25.0" prefWidth="152.0" promptText="Product Id">
+      <JFXTextField fx:id="txtProductId" editable="false" focusTraversable="false" layoutX="43.0" layoutY="90.0" onAction="#searchProductOnAction" prefHeight="25.0" prefWidth="152.0" promptText="Product Id">
          <cursor>
             <Cursor fx:constant="TEXT" />
          </cursor>

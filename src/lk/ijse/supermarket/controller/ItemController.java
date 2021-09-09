@@ -80,4 +80,9 @@ public class ItemController {
     public boolean deleteItem(String propertyId) throws SQLException, ClassNotFoundException {
        return CrudUtil.execute ( "DELETE FROM Batch WHERE propertyId=?",propertyId );
     }
+
+    public ResultSet autoGenerateID() throws SQLException, ClassNotFoundException {
+        ResultSet rst = CrudUtil.execute( "SELECT propertyId FROM Batch ORDER BY propertyId DESC LIMIT 1" );
+        return rst;
+    }
 }

@@ -23,47 +23,47 @@
          </font>
       </Label>
       <Separator layoutY="70.0" prefHeight="3.0" prefWidth="153.0" />
-      <JFXButton fx:id="btnCancel" layoutX="160.0" layoutY="545.0" onAction="#btnCancelOnAction" prefHeight="35.0" prefWidth="92.0" style="-fx-background-color: #ff7675;" text="Cancle Order" textFill="WHITE">
+      <JFXButton fx:id="btnCancel" layoutX="535.0" layoutY="542.0" onAction="#btnCancelOnAction" prefHeight="35.0" prefWidth="92.0" style="-fx-background-color: #ff7675;" text="Cancle Order" textFill="WHITE">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
       </JFXButton>
-      <AnchorPane layoutX="162.0" layoutY="75.0" prefHeight="274.0" prefWidth="550.0" style="-fx-border-color: black;">
+      <AnchorPane layoutX="162.0" layoutY="75.0" prefHeight="245.0" prefWidth="550.0" style="-fx-border-color: black;">
          <children>
-            <JFXButton fx:id="btnConfirm" layoutX="465.0" layoutY="227.0" onAction="#btnConfirmOnAction" prefHeight="35.0" prefWidth="74.0" style="-fx-background-color: #00b894;" text="Confirm" textFill="WHITE">
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </JFXButton>
-            <JFXTextField fx:id="txtOrderId" layoutX="14.0" layoutY="14.0" prefHeight="25.0" prefWidth="92.0" promptText="Order Id" />
+            <JFXTextField fx:id="txtOrderId" layoutX="14.0" layoutY="2.0" prefHeight="25.0" prefWidth="92.0" promptText="Order Id" />
             <Label fx:id="lblDate" layoutX="492.0" layoutY="20.0" prefHeight="17.0" prefWidth="56.0" text="2021-09-09">
                <font>
                   <Font size="10.0" />
                </font></Label>
-            <Separator layoutX="14.0" layoutY="53.0" prefWidth="200.0" />
-            <JFXTextField fx:id="txtCusId" layoutX="14.0" layoutY="72.0" prefHeight="25.0" prefWidth="107.0" promptText="Customer Id" />
-            <JFXTextField fx:id="txtCusType" layoutX="163.0" layoutY="72.0" prefHeight="25.0" prefWidth="125.0" promptText="Customer Type" />
-            <JFXTextField fx:id="txtCusName" layoutX="335.0" layoutY="72.0" prefHeight="25.0" prefWidth="107.0" promptText="Customer Name" />
-            <JFXTextField fx:id="txtCusAddress" layoutX="18.0" layoutY="119.0" prefHeight="25.0" prefWidth="85.0" promptText="Address" />
-            <JFXTextField fx:id="txtCusCity" layoutX="135.0" layoutY="119.0" prefHeight="25.0" prefWidth="85.0" promptText="Customer City" />
-            <JFXTextField fx:id="txtCusProvince" layoutX="257.0" layoutY="119.0" prefHeight="25.0" prefWidth="107.0" promptText="Customer Province" />
-            <JFXTextField fx:id="txtCusContact" layoutX="389.0" layoutY="119.0" prefHeight="25.0" prefWidth="107.0" promptText="Customer Contact" />
-            <Separator layoutX="19.0" layoutY="162.0" prefHeight="3.0" prefWidth="316.0" />
-            <JFXComboBox fx:id="cmbSelectPropertyId" layoutX="19.0" layoutY="180.0" onAction="#cmbSelectPropertyId" prefHeight="25.0" prefWidth="115.0" promptText="Select property ID" />
-            <JFXTextField fx:id="txtUnitPrice" layoutX="275.0" layoutY="180.0" prefHeight="25.0" prefWidth="56.0" promptText="Unit Price" />
-            <JFXTextField fx:id="txtQty" editable="false" layoutX="350.0" layoutY="180.0" prefHeight="25.0" prefWidth="45.0" promptText="qty" />
-            <JFXTextField fx:id="txtDiscount" editable="false" layoutX="414.0" layoutY="180.0" prefHeight="25.0" prefWidth="125.0" promptText="Discount" />
+            <Separator layoutX="14.0" layoutY="41.0" prefWidth="200.0" />
+            <JFXTextField fx:id="txtCusId" layoutX="13.0" layoutY="47.0" prefHeight="25.0" prefWidth="107.0" promptText="Customer Id" />
+            <JFXTextField fx:id="txtCusType" layoutX="162.0" layoutY="47.0" prefHeight="25.0" prefWidth="125.0" promptText="Customer Type" />
+            <JFXTextField fx:id="txtCusName" layoutX="334.0" layoutY="47.0" prefHeight="25.0" prefWidth="107.0" promptText="Customer Name" />
+            <JFXTextField fx:id="txtCusAddress" layoutX="17.0" layoutY="94.0" prefHeight="25.0" prefWidth="85.0" promptText="Address" />
+            <JFXTextField fx:id="txtCusCity" layoutX="134.0" layoutY="94.0" prefHeight="25.0" prefWidth="85.0" promptText="Customer City" />
+            <JFXTextField fx:id="txtCusProvince" layoutX="256.0" layoutY="94.0" prefHeight="25.0" prefWidth="107.0" promptText="Customer Province" />
+            <JFXTextField fx:id="txtCusContact" layoutX="388.0" layoutY="94.0" prefHeight="25.0" prefWidth="107.0" promptText="Customer Contact" />
+            <Separator layoutX="18.0" layoutY="137.0" prefHeight="3.0" prefWidth="316.0" />
+            <JFXComboBox fx:id="cmbSelectPropertyId" layoutX="18.0" layoutY="155.0" onAction="#cmbSelectPropertyId" prefHeight="25.0" prefWidth="115.0" promptText="Select property ID" />
+            <JFXTextField fx:id="txtUnitPrice" layoutX="274.0" layoutY="155.0" prefHeight="25.0" prefWidth="56.0" promptText="Unit Price" />
+            <JFXTextField fx:id="txtQty" editable="false" layoutX="349.0" layoutY="155.0" prefHeight="25.0" prefWidth="45.0" promptText="qty" />
+            <JFXTextField fx:id="txtDiscount" editable="false" layoutX="413.0" layoutY="155.0" prefHeight="25.0" prefWidth="125.0" promptText="Discount" />
             <Label fx:id="lblTime" layoutX="473.0" layoutY="5.0" prefHeight="17.0" prefWidth="74.0" text="11:05:32 AM">
                <font>
                   <Font size="13.0" />
                </font>
             </Label>
-            <JFXTextField fx:id="txtProductName" editable="false" layoutX="158.0" layoutY="180.0" prefHeight="25.0" prefWidth="92.0" promptText="Product Name" />
-            <JFXTextField fx:id="txtOrderQty" layoutX="18.0" layoutY="227.0" promptText="Enter QTY">
+            <JFXTextField fx:id="txtProductName" editable="false" layoutX="157.0" layoutY="155.0" prefHeight="25.0" prefWidth="92.0" promptText="Product Name" />
+            <JFXTextField fx:id="txtOrderQty" layoutX="17.0" layoutY="202.0" promptText="Enter QTY">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </JFXTextField>
+            <JFXButton fx:id="btnAdd" layoutX="458.0" layoutY="202.0" onAction="#btnAddOnAction" prefHeight="17.0" prefWidth="74.0" style="-fx-background-color: #00b894;" text="Add" textFill="WHITE">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </JFXButton>
          </children>
       </AnchorPane>
       <Label layoutX="263.0" prefHeight="59.0" prefWidth="205.0" text="Place Order From">
@@ -71,12 +71,12 @@
             <Font name="System Bold" size="25.0" />
          </font>
       </Label>
-      <Label fx:id="lblCashierName" layoutX="627.0" layoutY="35.0" prefHeight="35.0" prefWidth="85.0" text="      Kamal" textAlignment="CENTER">
+      <Label fx:id="lblCashierId" layoutX="587.0" layoutY="35.0" prefHeight="35.0" prefWidth="125.0" text="Cashier Id is : 0" textAlignment="CENTER">
          <font>
             <Font name="System Bold" size="13.0" />
          </font>
       </Label>
-      <TableView fx:id="tblTempOrder" layoutX="166.0" layoutY="356.0" prefHeight="170.0" prefWidth="550.0">
+      <TableView fx:id="tblTempOrder" layoutX="162.0" layoutY="323.0" prefHeight="210.0" prefWidth="550.0">
         <columns>
           <TableColumn fx:id="colPropertyId" prefWidth="122.0" text="Propery ID" />
           <TableColumn fx:id="colProductName" prefWidth="92.0" text="Product Name" />
@@ -94,5 +94,15 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </ImageView>
+      <JFXButton fx:id="btnConfirm" layoutX="647.0" layoutY="542.0" onAction="#btnConfirmOnAction" prefHeight="35.0" prefWidth="74.0" style="-fx-background-color: #74b9ff;" text="Confirm" textFill="WHITE">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXButton>
+      <Label fx:id="lblTotal" layoutX="166.0" layoutY="538.0" prefHeight="44.0" prefWidth="115.0">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

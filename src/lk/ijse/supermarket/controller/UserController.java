@@ -54,7 +54,7 @@ public class UserController {
     }
 
     public User getActiveUsers(String name,String password) throws SQLException, ClassNotFoundException {
-        ResultSet rst = CrudUtil.execute ( "SELECT * FROM User WHERE name=? AND  password=? AND active_state=1",name,password );
+        ResultSet rst = CrudUtil.execute ( "SELECT * FROM User WHERE id=? AND  password=? AND active_state=1",name,password );
         if (rst.next ()){
             return new User (
                     rst.getInt ( 1 ),rst.getString ( 2 ),

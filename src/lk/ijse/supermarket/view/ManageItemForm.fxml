@@ -18,7 +18,7 @@
             <Font name="Arial Black" size="31.0" />
          </font>
       </Label>
-      <JFXTextField fx:id="txtPropertyId" layoutX="47.0" layoutY="89.0" onAction="#searchPropertyOnAction" prefHeight="25.0" prefWidth="162.0" promptText="Property ID" />
+      <JFXTextField fx:id="txtPropertyId" editable="false" focusTraversable="false" layoutX="47.0" layoutY="89.0" onAction="#searchPropertyOnAction" prefHeight="25.0" prefWidth="162.0" promptText="Property ID" />
       <JFXTextField fx:id="txtBatch" layoutX="229.0" layoutY="89.0" prefHeight="25.0" prefWidth="162.0" promptText="Batch" />
       <JFXTextField fx:id="txtPrice" layoutX="422.0" layoutY="89.0" prefHeight="25.0" prefWidth="162.0" promptText="Price" />
       <JFXTextField fx:id="txtDiscount" layoutX="229.0" layoutY="139.0" prefHeight="25.0" prefWidth="162.0" promptText="Discount" />

@@ -53,7 +53,6 @@ public class CashierFormController {
     public JFXTextField txtCusProvince;
     public JFXTextField txtCusContact;
     public JFXTextField txtOrderId;
-    public Label lblCashierName;
     public JFXTextField txtProductName;
     public JFXTextField txtOrderQty;
     public TableView tblTempOrder;
@@ -64,6 +63,9 @@ public class CashierFormController {
     public TableColumn colDiscount;
     public TableColumn colTotal;
     public ImageView btnBack;
+    public JFXButton btnAdd;
+    public Label lblTotal;
+    public Label lblCashierId;
 
     ArrayList< TempData > temps = new ArrayList<>( );
 
@@ -80,7 +82,7 @@ public class CashierFormController {
 
         getAllPropertyId();
         generateDateTime();
-        lblCashierName.setText( CashierLoginFormController.userName );
+        lblCashierId.setText("Cashier Id is : "+  CashierLoginFormController.userId );
     }
 
     public void generateDateTime() {
@@ -97,12 +99,12 @@ public class CashierFormController {
     public void btnCancelOnAction ( ActionEvent actionEvent ) {
     }
 
-    public void btnConfirmOnAction ( ActionEvent actionEvent ) {
+    public void btnAddOnAction ( ActionEvent actionEvent ) {
         String date = lblDate.getText( );
         String time = lblTime.getText( );
         String dateAndTime = (date+"/"+time);
 
-        String nameText = CashierLoginFormController.userName;
+        String cashierId = CashierLoginFormController.userId;
 
         TempData tempData = new TempData(
                 txtOrderId.getText(),
@@ -114,9 +116,18 @@ public class CashierFormController {
                 txtCusCity.getText(),
                 txtCusProvince.getText(),
                 Integer.parseInt( txtCusContact.getText() ),
-                nameText
+                cashierId
         );
+        getAllOrderIdFromArray();
         boolean add = temps.add( tempData );
+
+        int qty = Integer.parseInt( txtOrderQty.getText( ) );
+        double uniPrice = Double.parseDouble(txtUnitPrice.getText( ));
+        double dic = Double.parseDouble( txtDiscount.getText( ) );
+
+        double dicTot = (dic * qty);
+        double tot = (uniPrice * qty) - (dic * qty);
+
         if (add){
             TempTable tempTable = new TempTable(
                     txtOrderId.getText(),
@@ -124,13 +135,34 @@ public class CashierFormController {
                     txtProductName.getText( ) ,
                     BigDecimal.valueOf ( Double.parseDouble ( txtUnitPrice.getText ( ) ) ) ,
                     Integer.parseInt( txtOrderQty.getText( ) ) ,
-                    BigDecimal.valueOf( Double.parseDouble( txtDiscount.getText( ) ) ) ,
-                    BigDecimal.valueOf( Double.parseDouble( txtUnitPrice.getText( ) ) )
+                    BigDecimal.valueOf( Double.parseDouble( String.valueOf( dicTot ) ) ) ,
+                    BigDecimal.valueOf( Double.parseDouble( String.valueOf( tot ) ) )
             );
             tempTableArray.add( tempTable );
         }
-        getAllOrderIdFromArray();
         getAllProcessingOrder();
+        generateTotal();
+    }
+
+    public void generateTotal(){
+        int qty = Integer.parseInt( txtOrderQty.getText( ) );
+        double uniPrice = Double.parseDouble(txtUnitPrice.getText( ));
+        double dic = Double.parseDouble( txtDiscount.getText( ) );
+
+        double temp = ((uniPrice * qty) - (dic * qty));
+        lblTotal.setText( String.valueOf( temp ) );
+
+        if (lblTotal.getText( ) == String.valueOf( temp )){
+            System.out.println(lblTotal.getText() );
+
+        }else {
+            //lblTotal.setText( String.valueOf( temp ) );
+            //System.out.println(lblTotal.getText() );
+        }
+    }
+
+    public void btnConfirmOnAction ( ActionEvent actionEvent ) {
+
     }
 
     public void getAllProcessingOrder(){
@@ -155,7 +187,7 @@ public class CashierFormController {
     public void click ( MouseEvent mouseEvent ) {
         for ( TempData data:temps ) {
             if (this.list.getSelectionModel().selectedItemProperty().getValue().equals( data.getOrderId() )){
-                lblCashierName.setText( data.getCashierName() );
+                lblCashierId.setText("Cashier Id is :"+ data.getCashierId() );
                 txtOrderId.setText( data.getOrderId() );
                 txtCusId.setText( data.getCusId() );
                 txtCusType.setText( data.getCusType() );

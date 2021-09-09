@@ -10,7 +10,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.supermarket.controller.CashierLoginFormController">
    <children>
       <ImageView fitHeight="102.0" fitWidth="109.0" layoutX="254.0" layoutY="42.0" pickOnBounds="true" preserveRatio="true">
@@ -18,12 +17,12 @@
             <Image url="@../assets/cash_register_100px.png" />
          </image>
       </ImageView>
-      <Label layoutX="159.0" layoutY="159.0" prefHeight="26.0" prefWidth="126.0" style="-fx-background-color: white;" text="User Name :">
+      <Label layoutX="178.0" layoutY="159.0" prefHeight="26.0" prefWidth="102.0" style="-fx-background-color: white;" text="User Id :">
          <font>
             <Font name="Courier New Bold" size="18.0" />
          </font>
       </Label>
-      <JFXTextField fx:id="txtUserName" layoutX="297.0" layoutY="159.0" onKeyReleased="#txtUserNameKeyReleasedOnAction" prefHeight="25.0" prefWidth="186.0">
+      <JFXTextField fx:id="txtUserId" layoutX="297.0" layoutY="159.0" onKeyReleased="#txtUserNameKeyReleasedOnAction" prefHeight="25.0" prefWidth="186.0">
          <cursor>
             <Cursor fx:constant="TEXT" />
          </cursor>

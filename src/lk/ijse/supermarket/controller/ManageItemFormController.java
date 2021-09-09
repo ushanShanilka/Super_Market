@@ -19,13 +19,17 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
+import lk.ijse.supermarket.db.DBConnection;
 import lk.ijse.supermarket.model.Item;
 import lk.ijse.supermarket.model.Product;
 import lk.ijse.supermarket.view.tm.ItemTM;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -73,6 +77,7 @@ public class ManageItemFormController {
         generateDateTime();
         getAllProductId();
         txtDiscount.setDisable ( true );
+        generateId();
     }
 
     public void setUI(String location){
@@ -136,6 +141,7 @@ public class ManageItemFormController {
             if (new ItemController ().saveBatch ( item )){
                 new Alert ( Alert.AlertType.CONFIRMATION, "Saved").show();
                 getAllItems ();
+                generateId();
             }else {
                 new Alert ( Alert.AlertType.CONFIRMATION, "Fail").show();
             }
@@ -253,6 +259,33 @@ public class ManageItemFormController {
         } catch ( ClassNotFoundException e ) {
             e.printStackTrace ( );
         }
+    }
+
+    public void generateId(){
+        try {
+            ResultSet resultSet = new ItemController( ).autoGenerateID( );
+            if (resultSet.next()){
+                String oldId = resultSet.getString( 1 );
+                String substring = oldId.substring( 5 , 7 );
+                int intId = Integer.parseInt( substring );
+
+                intId = intId + 1;
+                if (intId<10){
+                    txtPropertyId.setText( "P00-00"+intId );
+                }else if (intId<100){
+                    txtPropertyId.setText( "P00-0"+intId );
+                }else if (intId<1000){
+                    txtPropertyId.setText( "P00-"+intId );
+                }
+            }else {
+                txtPropertyId.setText( "P00-001" );
+            }
+        } catch ( SQLException throwables ) {
+            throwables.printStackTrace( );
+        } catch ( ClassNotFoundException e ) {
+            e.printStackTrace( );
+        }
+
     }
 }
 

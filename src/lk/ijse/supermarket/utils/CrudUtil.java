@@ -5,6 +5,7 @@ import lk.ijse.supermarket.db.DBConnection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+
 public class CrudUtil {
     public static <T>T execute(String sql, Object...params) throws SQLException, ClassNotFoundException {
         PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement( sql);

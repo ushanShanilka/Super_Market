@@ -15,21 +15,22 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 public class CashierLoginFormController {
-    public JFXTextField txtUserName;
     public JFXPasswordField txtPassword;
     public JFXButton btnLogin;
     public JFXButton btnCancel;
+    public JFXTextField txtUserId;
 
-    public static String userName;
+    public static String userId;
+
 
     public void loginOnAction ( ActionEvent actionEvent ) {
         try {
-            User allActiveStateUsers = new UserController ( ).getActiveUsers ( txtUserName.getText ( ) , txtPassword.getText ( ) );
-            userName=txtUserName.getText();
+            User allActiveStateUsers = new UserController ( ).getActiveUsers ( txtUserId.getText ( ) , txtPassword.getText ( ) );
+            userId=txtUserId.getText();
+            System.out.println(userId );
             if (allActiveStateUsers!=null){
                 Stage stage = (Stage) btnCancel.getScene().getWindow();
                 stage.close();
-                System.out.println(userName );
 
                 Scene scene = new Scene( FXMLLoader.load( getClass( ).getResource( "../view/CashierForm.fxml" ) ) );
                 Stage ps = new Stage( );
