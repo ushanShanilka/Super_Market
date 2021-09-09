@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.supermarket.controller.CashierLoginFormController">
+   <children>
+      <ImageView fitHeight="102.0" fitWidth="109.0" layoutX="254.0" layoutY="42.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets/cash_register_100px.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="159.0" layoutY="159.0" prefHeight="26.0" prefWidth="126.0" style="-fx-background-color: white;" text="User Name :">
+         <font>
+            <Font name="Courier New Bold" size="18.0" />
+         </font>
+      </Label>
+      <JFXTextField fx:id="txtUserName" layoutX="297.0" layoutY="159.0" onKeyReleased="#txtUserNameKeyReleasedOnAction" prefHeight="25.0" prefWidth="186.0">
+         <cursor>
+            <Cursor fx:constant="TEXT" />
+         </cursor>
+      </JFXTextField>
+      <JFXPasswordField fx:id="txtPassword" layoutX="297.0" layoutY="208.0" onKeyReleased="#txtPwKeyReleasedOnAction" prefHeight="25.0" prefWidth="186.0" />
+      <JFXButton fx:id="btnCancel" layoutX="202.0" layoutY="276.0" onAction="#cancelOnActon" prefHeight="27.0" prefWidth="92.0" style="-fx-border-color: black; -fx-border-radius: 6;" text="Cancel">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXButton>
+      <JFXButton fx:id="btnLogin" layoutX="317.0" layoutY="276.0" onAction="#loginOnAction" prefHeight="27.0" prefWidth="92.0" style="-fx-background-color: #b2bec3; -fx-border-radius: 6; -fx-border-color: black;" text="Login">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXButton>
+      <Label layoutX="170.0" layoutY="207.0" prefHeight="26.0" prefWidth="112.0" style="-fx-background-color: white;" text="Password :">
+         <font>
+            <Font name="Courier New Bold" size="18.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

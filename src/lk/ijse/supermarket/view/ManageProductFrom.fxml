@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXCheckBox?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="root" prefHeight="507.0" prefWidth="641.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.supermarket.controller.ManageProductFromController">
+   <children>
+      <Label layoutX="178.0" layoutY="2.0" prefHeight="43.0" prefWidth="286.0" text="Manage Product" textAlignment="CENTER">
+         <font>
+            <Font name="Arial Black" size="31.0" />
+         </font>
+      </Label>
+      <JFXTextField fx:id="txtProductId" layoutX="43.0" layoutY="90.0" onAction="#searchProductOnAction" prefHeight="25.0" prefWidth="152.0" promptText="Product Id">
+         <cursor>
+            <Cursor fx:constant="TEXT" />
+         </cursor>
+      </JFXTextField>
+      <JFXTextField fx:id="txtProductName" layoutX="245.0" layoutY="90.0" prefHeight="25.0" prefWidth="152.0" promptText="Product Name">
+         <cursor>
+            <Cursor fx:constant="TEXT" />
+         </cursor>
+      </JFXTextField>
+      <JFXTextField fx:id="txtProductDescription" layoutX="445.0" layoutY="90.0" prefHeight="25.0" prefWidth="152.0" promptText="Dscription">
+         <cursor>
+            <Cursor fx:constant="TEXT" />
+         </cursor>
+      </JFXTextField>
+      <JFXTextField fx:id="txtSpec" layoutX="43.0" layoutY="140.0" prefHeight="25.0" prefWidth="152.0" promptText="Specification">
+         <cursor>
+            <Cursor fx:constant="TEXT" />
+         </cursor>
+      </JFXTextField>
+      <JFXTextField fx:id="txtDisplayName" layoutX="245.0" layoutY="140.0" prefHeight="25.0" prefWidth="152.0" promptText="Display Name">
+         <cursor>
+            <Cursor fx:constant="TEXT" />
+         </cursor>
+      </JFXTextField>
+      <JFXTextField fx:id="txtBrands" layoutX="445.0" layoutY="195.0" prefHeight="25.0" prefWidth="152.0" promptText="Available Brands">
+         <cursor>
+            <Cursor fx:constant="TEXT" />
+         </cursor>
+      </JFXTextField>
+      <JFXCheckBox fx:id="checkAvailability" layoutX="43.0" layoutY="199.0" text="Availability">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXCheckBox>
+      <JFXCheckBox fx:id="checkState" layoutX="253.0" layoutY="199.0" text="Active State">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXCheckBox>
+      <JFXButton fx:id="btnSave" layoutX="313.0" layoutY="239.0" onAction="#btnSaveOnAction" prefHeight="25.0" prefWidth="77.0" style="-fx-border-color: black; -fx-background-color: #00b894;" text="Save" textFill="WHITE">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </JFXButton>
+      <JFXButton fx:id="btnClear" layoutX="525.0" layoutY="239.0" onAction="#btnClearOnAction" prefHeight="25.0" prefWidth="77.0" style="-fx-border-color: black; -fx-background-color: #d63031;" text="Cleare" textFill="WHITE">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </JFXButton>
+      <JFXButton fx:id="btnUpdate" layoutX="421.0" layoutY="239.0" onAction="#btnUpdateOnAction" prefHeight="25.0" prefWidth="77.0" style="-fx-border-color: black; -fx-background-color: #0984e3;" text="Update" textFill="WHITE">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </JFXButton>
+      <TableView fx:id="tblManageProduct" layoutX="15.0" layoutY="293.0" prefHeight="200.0" prefWidth="612.0">
+        <columns>
+          <TableColumn fx:id="colProductId" prefWidth="51.0" text="Id" />
+          <TableColumn fx:id="colName" prefWidth="46.0" text="Name" />
+            <TableColumn fx:id="colDescription" prefWidth="63.0" text="Dscription" />
+            <TableColumn fx:id="colSpec" prefWidth="43.0" text="Spec" />
+            <TableColumn fx:id="colDisplayName" prefWidth="93.0" text="Display Name" />
+            <TableColumn fx:id="colAvailability" prefWidth="83.0" text="Availability" />
+            <TableColumn fx:id="colActiveState" prefWidth="73.0" text="Active State" />
+            <TableColumn fx:id="colBrands" prefWidth="53.0" text="Brands" />
+            <TableColumn fx:id="colOption" prefWidth="106.0" text="Option" />
+        </columns>
+      </TableView>
+   </children>
+</AnchorPane>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="507.0" prefWidth="641.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.supermarket.controller.AdminDashBordFormController">
+   <children>
+      <AnchorPane prefHeight="65.0" prefWidth="641.0" style="-fx-background-color: #dfe6e9;">
+         <children>
+            <JFXButton fx:id="btnSystemReports" focusTraversable="false" layoutX="73.0" layoutY="14.0" onAction="#btnSystemReportsOnAction" prefHeight="39.0" prefWidth="125.0" style="-fx-border-color: black;" text="System Repots">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </JFXButton>
+            <JFXButton fx:id="btnManageProduct" focusTraversable="false" layoutX="216.0" layoutY="14.0" onAction="#btnManageProductOnAction" prefHeight="39.0" prefWidth="133.0" style="-fx-border-color: black;" text="Manage Product">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </JFXButton>
+            <JFXButton fx:id="btnManageItem" focusTraversable="false" layoutX="369.0" layoutY="14.0" onAction="#btnManageItemOnAction" prefHeight="39.0" prefWidth="110.0" style="-fx-border-color: black;" text="Manage Item">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </JFXButton>
+            <JFXButton fx:id="btnManageCashiers" focusTraversable="false" layoutX="494.0" layoutY="14.0" onAction="#btnManageCashiersOnAction" prefHeight="39.0" prefWidth="139.0" style="-fx-border-color: black;" text="Manage Cashiers">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </JFXButton>
+            <ImageView fx:id="bntBack" fitHeight="39.0" fitWidth="45.0" layoutX="7.0" layoutY="14.0" onMouseClicked="#bntBackOnAction" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../assets/left_arrow_26px.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="root" layoutY="73.0" prefHeight="499.0" prefWidth="641.0">
+         <children>
+            <Label layoutX="78.0" layoutY="188.0" prefHeight="122.0" prefWidth="216.0" style="-fx-border-color: black;" text="                      Available Cashiers">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="65.0" fitWidth="70.0" layoutX="92.0" layoutY="218.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../assets/cash_register_100px.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="lblCashiersCount" layoutX="209.0" layoutY="262.0" prefHeight="27.0" prefWidth="45.0" text="02">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="355.0" layoutY="190.0" prefHeight="122.0" prefWidth="216.0" style="-fx-border-color: black;" text="                      Pending Orders">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="65.0" fitWidth="70.0" layoutX="369.0" layoutY="220.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../assets/tasklist_100px.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="lblPendingOrderCount" layoutX="486.0" layoutY="264.0" prefHeight="27.0" prefWidth="45.0" text="02">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+         </children></AnchorPane>
+      <Separator layoutY="72.0" prefHeight="0.0" prefWidth="641.0" />
+   </children>
+</AnchorPane>

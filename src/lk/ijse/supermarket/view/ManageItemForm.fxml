@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXCheckBox?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="root" prefHeight="507.0" prefWidth="641.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.supermarket.controller.ManageItemFormController">
+   <children>
+      <Label layoutX="208.0" prefHeight="56.0" prefWidth="225.0" text="Manage Item" textAlignment="CENTER">
+         <font>
+            <Font name="Arial Black" size="31.0" />
+         </font>
+      </Label>
+      <JFXTextField fx:id="txtPropertyId" layoutX="47.0" layoutY="89.0" onAction="#searchPropertyOnAction" prefHeight="25.0" prefWidth="162.0" promptText="Property ID" />
+      <JFXTextField fx:id="txtBatch" layoutX="229.0" layoutY="89.0" prefHeight="25.0" prefWidth="162.0" promptText="Batch" />
+      <JFXTextField fx:id="txtPrice" layoutX="422.0" layoutY="89.0" prefHeight="25.0" prefWidth="162.0" promptText="Price" />
+      <JFXTextField fx:id="txtDiscount" layoutX="229.0" layoutY="139.0" prefHeight="25.0" prefWidth="162.0" promptText="Discount" />
+      <JFXCheckBox fx:id="setDiscount" layoutX="47.0" layoutY="145.0" onAction="#setDiscountOnAction" text="Set Discount" />
+      <JFXCheckBox fx:id="setActiveState" layoutX="47.0" layoutY="196.0" text="Active State" />
+      <JFXTextField fx:id="txtQty" layoutX="229.0" layoutY="192.0" prefHeight="25.0" prefWidth="162.0" promptText="qty" />
+      <Label fx:id="lblDate" layoutX="553.0" layoutY="34.0" prefHeight="17.0" prefWidth="63.0" text="06/06/2021" />
+      <JFXComboBox fx:id="cmbProductId" layoutX="433.0" layoutY="193.0" prefHeight="25.0" prefWidth="146.0" promptText="Select Produst Id" />
+      <TableView fx:id="tblItem" layoutX="15.0" layoutY="298.0" prefHeight="200.0" prefWidth="607.0">
+        <columns>
+          <TableColumn fx:id="colPropertyId" prefWidth="75.0" text="Property Id" />
+          <TableColumn fx:id="colBatch" prefWidth="75.0" text="Batch" />
+            <TableColumn fx:id="colPrice" prefWidth="65.0" text="Price" />
+            <TableColumn fx:id="colDiscount" prefWidth="65.0" text="Discount" />
+            <TableColumn fx:id="colActivateState" prefWidth="95.0" text="Activate State" />
+            <TableColumn fx:id="colQty" prefWidth="47.0" text="qty" />
+            <TableColumn fx:id="colProductID" prefWidth="97.0" text="Product ID" />
+            <TableColumn fx:id="colOption" prefWidth="87.0" text="Option" />
+        </columns>
+      </TableView>
+      <Label fx:id="lblTime" layoutX="518.0" layoutY="7.0" prefHeight="27.0" prefWidth="105.0" text="12.34.22 AM">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <JFXButton fx:id="btnSave" layoutX="303.0" layoutY="241.0" onAction="#btnSaveOnAction" prefHeight="25.0" prefWidth="77.0" style="-fx-border-color: black; -fx-background-color: #00b894;" text="Save" textFill="WHITE">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </JFXButton>
+      <JFXButton fx:id="btnClear" layoutX="515.0" layoutY="241.0" onAction="#btnClearOnAction" prefHeight="25.0" prefWidth="77.0" style="-fx-border-color: black; -fx-background-color: #d63031;" text="Cleare" textFill="WHITE">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </JFXButton>
+      <JFXButton fx:id="btnUpdate" layoutX="411.0" layoutY="241.0" onAction="#btnUpdateOnAction" prefHeight="25.0" prefWidth="77.0" style="-fx-border-color: black; -fx-background-color: #0984e3;" text="Update" textFill="WHITE">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </JFXButton>
+   </children>
+</AnchorPane>

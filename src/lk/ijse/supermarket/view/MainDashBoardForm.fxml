@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="root" prefHeight="308.0" prefWidth="636.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.supermarket.controller.MainDashBoardFormController">
+   <children>
+      <JFXButton fx:id="btnAdmin" focusTraversable="false" layoutX="36.0" layoutY="91.0" onAction="#btnAdminOnAction" prefHeight="127.0" prefWidth="255.0" style="-fx-border-color: black;" text="        Adimin" textAlignment="RIGHT" wrapText="true">
+         <font>
+            <Font size="29.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXButton>
+      <JFXButton fx:id="btnCashier" focusTraversable="false" layoutX="337.0" layoutY="91.0" onAction="#btnCashierOnAction" prefHeight="127.0" prefWidth="255.0" style="-fx-border-color: black;" text="             Cashier">
+         <font>
+            <Font size="29.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXButton>
+      <ImageView fitHeight="84.0" fitWidth="85.0" layoutX="56.0" layoutY="113.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets/microsoft_admin_100px.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="84.0" fitWidth="85.0" layoutX="367.0" layoutY="113.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets/cash_register_100px.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>
