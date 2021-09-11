@@ -1,8 +1,8 @@
 package lk.ijse.supermarket.model;
 
-public class TempData {
-    private String orderId;
-    private String orderDate;
+import java.util.ArrayList;
+
+public class Customer {
     private String cusId;
     private String cusType;
     private String cusName;
@@ -10,15 +10,22 @@ public class TempData {
     private String cusCity;
     private String cusProvince;
     private int cusContact;
-    private String cashierId;
-    private Double subTot;
 
-    public TempData ( ) {
+    private ArrayList< Order > orders;
+
+    public ArrayList< Order > getOrders ( ) {
+        return orders;
     }
 
-    public TempData ( String orderId , String orderDate , String cusId , String cusType , String cusName , String cusAddress , String cusCity , String cusProvince , int cusContact , String cashierId , Double subTot ) {
-        this.orderId = orderId;
-        this.orderDate = orderDate;
+    public void setOrders ( ArrayList< Order > orders ) {
+        this.orders = orders;
+    }
+
+    public Customer ( ) {
+
+    }
+
+    public Customer ( String cusId , String cusType , String cusName , String cusAddress , String cusCity , String cusProvince , int cusContact ) {
         this.cusId = cusId;
         this.cusType = cusType;
         this.cusName = cusName;
@@ -26,24 +33,6 @@ public class TempData {
         this.cusCity = cusCity;
         this.cusProvince = cusProvince;
         this.cusContact = cusContact;
-        this.cashierId = cashierId;
-        this.subTot = subTot;
-    }
-
-    public String getOrderId ( ) {
-        return orderId;
-    }
-
-    public void setOrderId ( String orderId ) {
-        this.orderId = orderId;
-    }
-
-    public String getOrderDate ( ) {
-        return orderDate;
-    }
-
-    public void setOrderDate ( String orderDate ) {
-        this.orderDate = orderDate;
     }
 
     public String getCusId ( ) {
@@ -102,36 +91,16 @@ public class TempData {
         this.cusContact = cusContact;
     }
 
-    public String getCashierId ( ) {
-        return cashierId;
-    }
-
-    public void setCashierId ( String cashierId ) {
-        this.cashierId = cashierId;
-    }
-
-    public Double getSubTot ( ) {
-        return subTot;
-    }
-
-    public void setSubTot ( Double subTot ) {
-        this.subTot = subTot;
-    }
-
     @Override
     public String toString ( ) {
-        return "TempData{" +
-               "orderId='" + orderId + '\'' +
-               ", orderDate='" + orderDate + '\'' +
-               ", cusId='" + cusId + '\'' +
+        return "Customer{" +
+               "cusId='" + cusId + '\'' +
                ", cusType='" + cusType + '\'' +
                ", cusName='" + cusName + '\'' +
                ", cusAddress='" + cusAddress + '\'' +
                ", cusCity='" + cusCity + '\'' +
                ", cusProvince='" + cusProvince + '\'' +
                ", cusContact=" + cusContact +
-               ", cashierId='" + cashierId + '\'' +
-               ", subTot=" + subTot +
                '}';
     }
 }

@@ -12,6 +12,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -20,15 +21,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import lk.ijse.supermarket.model.Item;
-import lk.ijse.supermarket.model.Product;
-import lk.ijse.supermarket.model.TempData;
-import lk.ijse.supermarket.model.TempTable;
+import lk.ijse.supermarket.model.*;
 import lk.ijse.supermarket.view.tm.TempOrderTM;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -66,11 +65,13 @@ public class CashierFormController {
     public JFXButton btnAdd;
     public Label lblTotal;
     public Label lblCashierId;
+    public TableColumn colOption;
+    public JFXButton btnPlaceOrder;
+    public JFXButton btnNew;
 
     ArrayList< TempData > temps = new ArrayList<>( );
 
     ArrayList< TempTable > tempTableArray = new ArrayList<>( );
-
 
     public void initialize(){
         colPropertyId.setCellValueFactory( new PropertyValueFactory<>( "propertyId" ) );
@@ -79,10 +80,36 @@ public class CashierFormController {
         colQty.setCellValueFactory( new PropertyValueFactory<>( "qty" ) );
         colDiscount.setCellValueFactory( new PropertyValueFactory<>( "discount" ) );
         colTotal.setCellValueFactory( new PropertyValueFactory<>( "total" ) );
+        colOption.setCellValueFactory( new PropertyValueFactory<>( "btn" ) );
 
         getAllPropertyId();
         generateDateTime();
-        lblCashierId.setText("Cashier Id is : "+  CashierLoginFormController.userId );
+        lblCashierId.setText(  CashierLoginFormController.userId );
+        setOrderId();
+        setCustomerId();
+    }
+
+    private void setOrderId(){
+        try {
+            String s = new CashierController( ).generateOrderId( );
+            txtOrderId.setText( s );
+        } catch ( SQLException throwables ) {
+            throwables.printStackTrace( );
+        } catch ( ClassNotFoundException e ) {
+            e.printStackTrace( );
+        }
+
+    }
+
+    private void setCustomerId(){
+        try {
+            String s = new CashierController( ).generateCustomerId( );
+            txtCusId.setText( s );
+        } catch ( SQLException throwables ) {
+            throwables.printStackTrace( );
+        } catch ( ClassNotFoundException e ) {
+            e.printStackTrace( );
+        }
     }
 
     public void generateDateTime() {
@@ -96,15 +123,44 @@ public class CashierFormController {
         timeline.play();
     }
 
+    private void deleteTempData(){
+        for ( int i = 0; i < temps.size( ); i++ ) {
+            TempData data = temps.get( i );
+            if (txtOrderId.getText().equals( data.getOrderId() )){
+                boolean remove = temps.remove( data );
+                if (remove){
+                    for ( int j = 0; j < tempTableArray.size( ); j++ ) {
+                        TempTable table = tempTableArray.get( j );
+                        if (txtOrderId.getText().equals( table.getOrderId() )){
+                            tempTableArray.remove( table );
+                        }
+                    }
+                    list.refresh();
+                    tblTempOrder.refresh();
+                }
+            }
+        }
+    }
+
     public void btnCancelOnAction ( ActionEvent actionEvent ) {
+        deleteTempData();
+        getAllOrderIdFromArray();
+        getAllProcessingOrder();
+        clear();
     }
 
     public void btnAddOnAction ( ActionEvent actionEvent ) {
         String date = lblDate.getText( );
         String time = lblTime.getText( );
         String dateAndTime = (date+"/"+time);
-
         String cashierId = CashierLoginFormController.userId;
+
+        int qty = Integer.parseInt( txtOrderQty.getText( ) );
+        double uniPrice = Double.parseDouble(txtUnitPrice.getText( ));
+        double dic = Double.parseDouble( txtDiscount.getText( ) );
+
+        double dicTot = (dic * qty);
+        double subTot = (uniPrice * qty) - (dic * qty);
 
         TempData tempData = new TempData(
                 txtOrderId.getText(),
@@ -116,61 +172,100 @@ public class CashierFormController {
                 txtCusCity.getText(),
                 txtCusProvince.getText(),
                 Integer.parseInt( txtCusContact.getText() ),
-                cashierId
+                cashierId,
+                subTot
         );
-        getAllOrderIdFromArray();
-        boolean add = temps.add( tempData );
 
-        int qty = Integer.parseInt( txtOrderQty.getText( ) );
-        double uniPrice = Double.parseDouble(txtUnitPrice.getText( ));
-        double dic = Double.parseDouble( txtDiscount.getText( ) );
+        int rowNumber1 = isExistsTempData( tempData );
 
-        double dicTot = (dic * qty);
-        double tot = (uniPrice * qty) - (dic * qty);
+        if (rowNumber1==-1){
+            temps.add( tempData );
+            tblTempOrder.refresh();
+        }else {
+            tblTempOrder.refresh();
+        }
 
-        if (add){
             TempTable tempTable = new TempTable(
                     txtOrderId.getText(),
                     String.valueOf( cmbSelectPropertyId.getValue( ) ) ,
                     txtProductName.getText( ) ,
-                    BigDecimal.valueOf ( Double.parseDouble ( txtUnitPrice.getText ( ) ) ) ,
+                     Double.parseDouble ( txtUnitPrice.getText ( ) ),
                     Integer.parseInt( txtOrderQty.getText( ) ) ,
-                    BigDecimal.valueOf( Double.parseDouble( String.valueOf( dicTot ) ) ) ,
-                    BigDecimal.valueOf( Double.parseDouble( String.valueOf( tot ) ) )
+                    Double.parseDouble( String.valueOf( dicTot ) )  ,
+                    Double.parseDouble( String.valueOf( subTot ) )
             );
-            tempTableArray.add( tempTable );
-        }
+
+            int rowNumber = isExists(tempTable);
+            if (rowNumber==-1){
+                if (Integer.parseInt( txtQty.getText() )>=Integer.parseInt( txtOrderQty.getText() )){
+                    tempTableArray.add( tempTable );
+                    getAllProcessingOrder();
+                }else {
+                    new Alert( Alert.AlertType.WARNING,"Out of Bounds" ).show();
+                }
+            }else {
+                if (Integer.parseInt( txtQty.getText() )>=tempTableArray.get( rowNumber ).getQty()+Integer.parseInt( txtOrderQty.getText() )){
+                    tempTableArray.get( rowNumber ).setQty( tempTableArray.get( rowNumber ).getQty()+Integer.parseInt( txtOrderQty.getText() ) );
+                    tempTableArray.get( rowNumber ).setSubTotal( tempTableArray.get( rowNumber ).getSubTotal()+subTot);
+                    tempTableArray.get( rowNumber ).setDiscount( tempTableArray.get( rowNumber ).getDiscount()+dicTot);
+                    tblTempOrder.refresh();
+                }else {
+                    new Alert( Alert.AlertType.WARNING,"Out of Bounds" ).show();
+                }
+            }
+
         getAllProcessingOrder();
         generateTotal();
     }
 
+    private int isExistsTempData ( TempData tempData ) {
+        for ( int i = 0; i < temps.size( ); i++ ) {
+            if (temps.get( i ).getOrderId().equals( tempData.getOrderId() )){
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private int isExists ( TempTable tempTable ) {
+        for ( int i = 0; i < tempTableArray.size( ); i++ ) {
+            if (tempTableArray.get( i ).getOrderId().equals( txtOrderId.getText() ) && tempTableArray.get( i ).getPropertyId().equals( tempTable.getPropertyId() )){
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    double totalCost = 0.0;
+    int qty = 0;
     public void generateTotal(){
-        int qty = Integer.parseInt( txtOrderQty.getText( ) );
+        qty = Integer.parseInt( txtOrderQty.getText( ) );
         double uniPrice = Double.parseDouble(txtUnitPrice.getText( ));
         double dic = Double.parseDouble( txtDiscount.getText( ) );
 
         double temp = ((uniPrice * qty) - (dic * qty));
-        lblTotal.setText( String.valueOf( temp ) );
+        totalCost+=temp;
 
-        if (lblTotal.getText( ) == String.valueOf( temp )){
-            System.out.println(lblTotal.getText() );
-
-        }else {
-            //lblTotal.setText( String.valueOf( temp ) );
-            //System.out.println(lblTotal.getText() );
-        }
+        lblTotal.setText( String.valueOf( totalCost ) );
     }
 
     public void btnConfirmOnAction ( ActionEvent actionEvent ) {
+        try{
+        getAllOrderIdFromArray();
+        getAllPropertyId();
+        clear();
+        }catch ( NullPointerException e ){
 
+        }
     }
 
     public void getAllProcessingOrder(){
         tblTempOrder.setItems( null );
         ObservableList< TempOrderTM > list = FXCollections.observableArrayList( );
+
         for ( TempTable data:tempTableArray) {
             if (txtOrderId.getText().equals( data.getOrderId() )){
-                list.add( new TempOrderTM( data.getPropertyId(),data.getProductName(),data.getUnitPrice(),data.getQty(),data.getDiscount(),data.getTotal() ) );
+                list.add( new TempOrderTM( data.getPropertyId(),data.getProductName(),data.getUnitPrice(),data.getQty(),data.getDiscount(),data.getSubTotal() ) );
             }
         }
         tblTempOrder.setItems( list );
@@ -187,7 +282,7 @@ public class CashierFormController {
     public void click ( MouseEvent mouseEvent ) {
         for ( TempData data:temps ) {
             if (this.list.getSelectionModel().selectedItemProperty().getValue().equals( data.getOrderId() )){
-                lblCashierId.setText("Cashier Id is :"+ data.getCashierId() );
+                lblCashierId.setText(data.getCashierId() );
                 txtOrderId.setText( data.getOrderId() );
                 txtCusId.setText( data.getCusId() );
                 txtCusType.setText( data.getCusType() );
@@ -202,15 +297,16 @@ public class CashierFormController {
 
         for ( TempTable data:tempTableArray) {
             if (this.list.getSelectionModel().selectedItemProperty().getValue().equals( data.getOrderId() )){
-                list.add( new TempOrderTM( data.getPropertyId(),data.getProductName(),data.getUnitPrice(),data.getQty(),data.getDiscount(),data.getTotal() ) );
+                list.add( new TempOrderTM( data.getPropertyId(),data.getProductName(),data.getUnitPrice(),data.getQty(),data.getDiscount(),data.getSubTotal() ) );
             }
+            lblTotal.setText( String.valueOf( data.getSubTotal() ) );
         }
         tblTempOrder.setItems( list );
     }
 
     public void cmbSelectPropertyId ( ActionEvent actionEvent ) {
         try {
-            List< Item > allItems = new ItemController( ).getAllItems( );
+            List< Item > allItems = new ItemController( ).getAllActiveStateItems( );
 
             for ( Item item:allItems) {
                 if (cmbSelectPropertyId.getValue().equals( item.getPropertyId() )){
@@ -225,14 +321,15 @@ public class CashierFormController {
             throwables.printStackTrace( );
         } catch ( ClassNotFoundException e ) {
             e.printStackTrace( );
+        }catch ( NullPointerException e ){
+
         }
     }
 
     public void getAllPropertyId(){
         try {
-            List< Item > all = new ItemController( ).getAllItems( );
+            List< Item > all = new ItemController( ).getAllActiveStateItems( );
             ObservableList< String > propertyId = FXCollections.observableArrayList( );
-
             for ( Item item:all) {
                 propertyId.add( item.getPropertyId() );
             }
@@ -255,6 +352,87 @@ public class CashierFormController {
             primaryStage.show( );
         } catch ( IOException e ) {
             e.printStackTrace ( );
+        }
+    }
+
+    public void btnPlaceOrderOnAction ( ActionEvent actionEvent ) {
+            Customer customer = new Customer(
+                    txtCusId.getText( ) ,
+                    txtCusType.getText( ) ,
+                    txtCusName.getText( ) ,
+                    txtCusAddress.getText( ) ,
+                    txtCusCity.getText( ) ,
+                    txtCusProvince.getText( ) ,
+                    Integer.parseInt( txtCusContact.getText( ) )
+            );
+        ArrayList< Order > orders = new ArrayList<>( );
+        Order order = new Order( txtOrderId.getText( ) , lblDate.getText( ) + "/" + lblTime.getText( ) , Double.parseDouble( lblTotal.getText( ) ) , txtCusId.getText( ) , Integer.parseInt( lblCashierId.getText( ) ) );
+        orders.add(order);
+        customer.setOrders(orders);
+
+        ArrayList< OrderDetail > details = new ArrayList<>( );
+
+        for ( TempTable tm : tempTableArray) {
+            if (txtOrderId.getText().equals( tm.getOrderId() )){
+                details.add( new OrderDetail( tm.getQty( ) , tm.getUnitPrice( ) , txtOrderId.getText() , tm.getPropertyId( ) ) );
+            }
+        }
+        order.setDetails( details );
+
+        try {
+                if (new CashierController().saveCustomer( customer )){
+                    deleteTempData();
+                    new Alert( Alert.AlertType.CONFIRMATION,"Success ! " ).show();
+                    getAllOrderIdFromArray();
+                    getAllProcessingOrder();
+                    tblTempOrder.refresh();
+                }else {
+                    new Alert( Alert.AlertType.WARNING,"Fail !" ).show();
+                }
+        } catch ( SQLException throwables ) {
+            throwables.printStackTrace( );
+        }
+    }
+
+    private void clear(){
+        setOrderId();
+        setCustomerId();
+        txtCusType.setText( "" );
+        txtCusName.setText( "" );
+        txtCusAddress.setText( "" );
+        txtCusCity.setText( "" );
+        txtCusProvince.setText( "" );
+        txtCusContact.setText( "" );
+        txtProductName.setText( "" );
+        txtUnitPrice.setText( "" );
+        txtQty.setText( "" );
+        txtDiscount.setText( "" );
+        txtOrderQty.setText( "" );
+        lblTotal.setText( "" );
+    }
+
+    public void btnNewOnAction ( ActionEvent actionEvent ) {
+        clear();
+        txtCusType.requestFocus();
+    }
+
+    public void searchCustomerOnAction ( ActionEvent actionEvent ) {
+        try {
+            Customer customer = new CashierController( ).getCustomer( txtCusId.getText( ) );
+            if (customer!=null){
+                txtCusType.setText( customer.getCusType() );
+                txtCusName.setText( customer.getCusName() );
+                txtCusAddress.setText( customer.getCusAddress() );
+                txtCusCity.setText( customer.getCusCity() );
+                txtCusProvince.setText( customer.getCusProvince() );
+                txtCusContact.setText( String.valueOf( customer.getCusContact() ) );
+            }else {
+                new Alert( Alert.AlertType.ERROR,"Empty Customer !" ).show();
+            }
+        } catch ( SQLException throwables ) {
+            throwables.printStackTrace( );
+        } catch ( ClassNotFoundException e ) {
+            e.printStackTrace( );
         }
     }
 }

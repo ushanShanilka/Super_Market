@@ -55,7 +55,7 @@ public class ItemController {
     }
 
     public boolean updateItem(Item item) throws SQLException, ClassNotFoundException {
-        return CrudUtil.execute ( "UPDATE Batch SET batch=?,price=?,discountState=?,discount=?,activeState=?,quantity=?,systemDate=?,productId=? WHERE propertyId=?",item.getBatch (),item.getPrice (),item.isDiscountState (),item.getDiscount (),item.isActiveState (),item.getQty (),item.getDateTime (),item.getBatch (),item.getPropertyId () );
+        return CrudUtil.execute ( "UPDATE Batch SET batch=?, price=?, discountState=?, discount=?, activeState=?, quantity=?, systemDate=?, productId=? WHERE propertyId=?",item.getBatch (),item.getPrice (),item.isDiscountState (),item.getDiscount (),item.isActiveState (),item.getQty (),item.getDateTime (),item.getProductId (),item.getPropertyId () );
     }
 
     public Item searchItem(String propertyId) throws SQLException, ClassNotFoundException {

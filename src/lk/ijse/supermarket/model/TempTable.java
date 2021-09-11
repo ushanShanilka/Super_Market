@@ -1,27 +1,26 @@
 package lk.ijse.supermarket.model;
 
-import java.math.BigDecimal;
 
 public class TempTable {
     private String orderId;
     private String propertyId;
     private String productName;
-    private BigDecimal unitPrice;
+    private Double unitPrice;
     private int qty;
-    private BigDecimal discount;
-    private BigDecimal total;
+    private Double discount;
+    private Double subTotal;
 
     public TempTable ( ) {
     }
 
-    public TempTable ( String orderId , String propertyId , String productName , BigDecimal unitPrice , int qty , BigDecimal discount , BigDecimal total ) {
+    public TempTable ( String orderId , String propertyId , String productName , Double unitPrice , int qty , Double discount , Double subTotal ) {
         this.orderId = orderId;
         this.propertyId = propertyId;
         this.productName = productName;
         this.unitPrice = unitPrice;
         this.qty = qty;
         this.discount = discount;
-        this.total = total;
+        this.subTotal = subTotal;
     }
 
     public String getOrderId ( ) {
@@ -48,11 +47,11 @@ public class TempTable {
         this.productName = productName;
     }
 
-    public BigDecimal getUnitPrice ( ) {
+    public Double getUnitPrice ( ) {
         return unitPrice;
     }
 
-    public void setUnitPrice ( BigDecimal unitPrice ) {
+    public void setUnitPrice ( Double unitPrice ) {
         this.unitPrice = unitPrice;
     }
 
@@ -64,20 +63,20 @@ public class TempTable {
         this.qty = qty;
     }
 
-    public BigDecimal getDiscount ( ) {
+    public Double getDiscount ( ) {
         return discount;
     }
 
-    public void setDiscount ( BigDecimal discount ) {
+    public void setDiscount ( Double discount ) {
         this.discount = discount;
     }
 
-    public BigDecimal getTotal ( ) {
-        return total;
+    public Double getSubTotal ( ) {
+        return subTotal;
     }
 
-    public void setTotal ( BigDecimal total ) {
-        this.total = total;
+    public void setSubTotal ( Double subTotal ) {
+        this.subTotal = subTotal;
     }
 
     @Override
@@ -89,7 +88,7 @@ public class TempTable {
                ", unitPrice=" + unitPrice +
                ", qty=" + qty +
                ", discount=" + discount +
-               ", total=" + total +
+               ", subTotal=" + subTotal +
                '}';
     }
 }

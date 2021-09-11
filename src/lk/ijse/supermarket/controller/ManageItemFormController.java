@@ -78,6 +78,26 @@ public class ManageItemFormController {
         getAllProductId();
         txtDiscount.setDisable ( true );
         generateId();
+
+        tblItem.getSelectionModel().selectedItemProperty().
+                addListener((observable, oldValue, newValue) -> {
+                    setData( ( ItemTM ) newValue );
+                });
+    }
+
+    private void setData ( ItemTM tm ) {
+        try {
+        txtPropertyId.setText( tm.getPropertyId() );
+        txtBatch.setText( tm.getBatch() );
+        txtPrice.setText( String.valueOf( tm.getPrice() ) );
+        setDiscount.setSelected( tm.isDiscountState() );
+        txtDiscount.setText( String.valueOf( tm.getDiscount() ) );
+        setActiveState.setSelected( tm.isActiveState() );
+        txtQty.setText( String.valueOf( tm.getQty() ) );
+        cmbProductId.setValue( tm.getProductId() );
+        }catch ( NullPointerException e ){
+
+        }
     }
 
     public void setUI(String location){
@@ -206,9 +226,9 @@ public class ManageItemFormController {
         Item item = new Item (
                 txtPropertyId.getText ( ) ,
                 txtBatch.getText ( ) ,
-                BigDecimal.valueOf ( Long.parseLong ( txtPrice.getText ( ) ) ),
+                BigDecimal.valueOf ( Double.parseDouble ( txtPrice.getText ( ) ) ),
                 setDiscount.isSelected (),
-                BigDecimal.valueOf ( Long.parseLong ( txtDiscount.getText ( ) )) ,
+                BigDecimal.valueOf ( Double.parseDouble ( txtDiscount.getText ( ) )) ,
                 setActiveState.isSelected ( ) ,
                 Integer.parseInt ( txtQty.getText ( ) ),
                 formatter.format ( date ),
@@ -217,6 +237,7 @@ public class ManageItemFormController {
         try {
             if (new ItemController ().updateItem ( item )){
                 new Alert(Alert.AlertType.CONFIRMATION, "Updated...").show();
+                getAllItems();
             }else {
                 new Alert(Alert.AlertType.WARNING, "Try Again...").show();
             }
@@ -288,16 +309,3 @@ public class ManageItemFormController {
 
     }
 }
-
-
-
-/*
-* try {
-            List< Item > allActiveStateItems = new ItemController ( ).getAllActiveStateItems ( );
-            System.out.println (allActiveStateItems );
-        } catch ( SQLException throwables ) {
-            throwables.printStackTrace ( );
-        } catch ( ClassNotFoundException e ) {
-            e.printStackTrace ( );
-        }
-* */

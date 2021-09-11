@@ -80,4 +80,9 @@ public class UserController {
         }
         return activeUsersList;
     }
+
+    public ResultSet generateUserId() throws SQLException, ClassNotFoundException {
+        ResultSet rst = CrudUtil.execute( "SELECT id FROM User ORDER BY id DESC LIMIT 1" );
+        return rst;
+    }
 }

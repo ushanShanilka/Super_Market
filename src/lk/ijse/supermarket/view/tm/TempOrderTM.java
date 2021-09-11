@@ -1,19 +1,20 @@
 package lk.ijse.supermarket.view.tm;
 
-import java.math.BigDecimal;
+
+import com.jfoenix.controls.JFXButton;
 
 public class TempOrderTM {
     private String propertyId;
     private String productName;
-    private BigDecimal unitPrice;
+    private Double unitPrice;
     private int qty;
-    private BigDecimal discount;
-    private BigDecimal total;
+    private Double discount;
+    private Double total;
 
     public TempOrderTM ( ) {
     }
 
-    public TempOrderTM ( String propertyId , String productName , BigDecimal unitPrice , int qty , BigDecimal discount , BigDecimal total ) {
+    public TempOrderTM ( String propertyId , String productName , Double unitPrice , int qty , Double discount , Double total ) {
         this.propertyId = propertyId;
         this.productName = productName;
         this.unitPrice = unitPrice;
@@ -38,11 +39,11 @@ public class TempOrderTM {
         this.productName = productName;
     }
 
-    public BigDecimal getUnitPrice ( ) {
+    public Double getUnitPrice ( ) {
         return unitPrice;
     }
 
-    public void setUnitPrice ( BigDecimal unitPrice ) {
+    public void setUnitPrice ( Double unitPrice ) {
         this.unitPrice = unitPrice;
     }
 
@@ -54,19 +55,19 @@ public class TempOrderTM {
         this.qty = qty;
     }
 
-    public BigDecimal getDiscount ( ) {
+    public Double getDiscount ( ) {
         return discount;
     }
 
-    public void setDiscount ( BigDecimal discount ) {
+    public void setDiscount ( Double discount ) {
         this.discount = discount;
     }
 
-    public BigDecimal getTotal ( ) {
+    public Double getTotal ( ) {
         return total;
     }
 
-    public void setTotal ( BigDecimal total ) {
+    public void setTotal ( Double total ) {
         this.total = total;
     }
 

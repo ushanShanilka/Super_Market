@@ -17,6 +17,7 @@ import lk.ijse.supermarket.model.User;
 import lk.ijse.supermarket.view.tm.ProductTM;
 import lk.ijse.supermarket.view.tm.UserTm;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -50,6 +51,7 @@ public class ManageUserFormController {
         colOption.setStyle ( "-fx-alignment:center" );
 
         getAllUsers();
+        setUserId();
 
         tblUser.getSelectionModel().selectedItemProperty().
                 addListener((observable, oldValue, newValue) -> {
@@ -69,6 +71,21 @@ public class ManageUserFormController {
         }
     }
 
+    private void setUserId(){
+        try {
+            ResultSet rst = new UserController( ).generateUserId( );
+            if (rst.next()){
+                int tempId = rst.getInt( 1 );
+                tempId = tempId+1;
+                txtUserId.setText( String.valueOf( tempId ) );
+            }
+        } catch ( SQLException throwables ) {
+            throwables.printStackTrace( );
+        } catch ( ClassNotFoundException e ) {
+            e.printStackTrace( );
+        }
+    }
+
     public void btnSaveOnAction ( ActionEvent actionEvent ) {
         User user = new User (
                 Integer.parseInt ( txtUserId.getText ( ) ) ,
@@ -81,6 +98,7 @@ public class ManageUserFormController {
             if (new UserController ().saveUser ( user )){
                 new Alert ( Alert.AlertType.CONFIRMATION,"User Saved!" ).show ();
                 getAllUsers();
+                setUserId();
             }else {
                 new Alert ( Alert.AlertType.ERROR,"Fail!" ).show ();
             }
@@ -122,6 +140,7 @@ public class ManageUserFormController {
             if (new UserController ().updateUser ( user )){
                 new Alert ( Alert.AlertType.CONFIRMATION,"User Update!" ).show ();
                 getAllUsers();
+                setUserId();
             }else {
                 new Alert ( Alert.AlertType.ERROR,"Fail!" ).show ();
             }

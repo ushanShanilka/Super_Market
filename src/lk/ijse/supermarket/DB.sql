@@ -4,7 +4,7 @@ create database supermarket;
 use supermarket;
 
 create table User(
-	id int (5) primary key,
+	id int (50) primary key,
 	name varchar (20) not null,
 	password varchar (20) not null,
     active_state BOOLEAN,
@@ -13,7 +13,7 @@ create table User(
 );
 
 create table Customer(
-	id Varchar (5) primary key,
+	id Varchar (50) primary key,
 	name varchar (20) not null,
 	customerType VARCHAR (45),
 	address VARCHAR (45),
@@ -23,7 +23,7 @@ create table Customer(
 );
 
 create table Product(
-	id Varchar (5) primary key,
+	id Varchar (50) primary key,
 	name varchar (20) not null,
 	description VARCHAR (45),
 	specification VARCHAR (45),
@@ -34,7 +34,7 @@ create table Product(
 );
 
 CREATE TABLE Batch(
-    propertyId VARCHAR (45) not null,
+    propertyId VARCHAR (45) primary key,
     batch VARCHAR (45) not null,
     price DECIMAL (10,2) not null,
     discountState BOOLEAN,
@@ -42,16 +42,16 @@ CREATE TABLE Batch(
     activeState BOOLEAN,
     quantity int (100),
     systemDate VARCHAR (45),
-    productId VARCHAR (5) not null,
+    productId VARCHAR (50) not null,
     CONSTRAINT FOREIGN KEY(productId) REFERENCES Product(id) on Delete Cascade on Update Cascade
 );
 
 CREATE TABLE Orders(
-	id VARCHAR(6) NOT NULL,
-	date DATE,
+	id VARCHAR(60) NOT NULL,
+	date VARCHAR(200),
 	totalCost DECIMAL (10,2),
-	customerId VARCHAR(6) NOT NULL,
-	userId int(6) NOT NULL,
+	customerId VARCHAR(60) ,
+	userId int(60) NOT NULL,
 	CONSTRAINT PRIMARY KEY (id),
 	CONSTRAINT FOREIGN KEY(customerId) REFERENCES Customer(id) on Delete Cascade on Update Cascade,
 	CONSTRAINT FOREIGN KEY(userId) REFERENCES User(id) on Delete Cascade on Update Cascade
@@ -60,8 +60,8 @@ CREATE TABLE Orders(
 Create TABLE orderDetail(
     qty int not null,
     unitPrice DECIMAL (10,2) not null,
-    orderId VARCHAR (6) not null,
-    productId VARCHAR (5) not null,
+    orderId VARCHAR (50) not null,
+    propId VARCHAR (50) not null,
     CONSTRAINT FOREIGN KEY(orderId) REFERENCES Orders(id) on Delete Cascade on Update Cascade,
-    CONSTRAINT FOREIGN KEY(productId) REFERENCES Batch(productId) on Delete Cascade on Update Cascade
+    CONSTRAINT FOREIGN KEY(propId) REFERENCES Batch(propertyId) on Delete Cascade on Update Cascade
 );
