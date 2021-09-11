@@ -18,6 +18,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Paint;
 import javafx.util.Duration;
 import lk.ijse.supermarket.db.DBConnection;
 import lk.ijse.supermarket.model.Item;
@@ -36,6 +37,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class ManageItemFormController {
     public JFXTextField txtPropertyId;
@@ -100,15 +102,6 @@ public class ManageItemFormController {
         }
     }
 
-    public void setUI(String location){
-        try {
-            this.root.getChildren ().clear ();
-            this.root.getChildren ().add ( FXMLLoader.load(getClass ().getResource ( "../view/" + location ) ) );
-        } catch ( IOException e ) {
-            e.printStackTrace ( );
-        }
-    }
-
     public void generateDateTime() {
         lblDate.setText( LocalDate.now().toString());
 
@@ -118,10 +111,6 @@ public class ManageItemFormController {
         }), new KeyFrame(Duration.seconds(1)));
         timeline.setCycleCount( Animation.INDEFINITE);
         timeline.play();
-    }
-
-    public void btnBackOnAction ( MouseEvent mouseEvent ) {
-        setUI ( "AdminDashBordForm.fxml" );
     }
 
     public void getAllProductId(){
@@ -142,34 +131,56 @@ public class ManageItemFormController {
     }
 
     public void btnSaveOnAction ( ActionEvent actionEvent ) {
-        SimpleDateFormat formatter=new SimpleDateFormat ( "dd/MM/yyyy HH:mm" );
-        Date date=new Date ( );
+        if (Pattern.compile( "^(B)[0-9]{1,5}" ).matcher( txtBatch.getText( ) ).matches( )) {
+            if (Pattern.compile( "^[0-9]{1,9}$" ).matcher( txtPrice.getText( ) ).matches( )) {
+                if (Pattern.compile( "^[0-9]{1,9}$" ).matcher( txtDiscount.getText( ) ).matches( )) {
+                    if (Pattern.compile( "^[0-9]{1,5}$" ).matcher( txtQty.getText( ) ).matches( )) {
 
-        Item item = new Item (
-                txtPropertyId.getText ( ) ,
-                txtBatch.getText ( ) ,
-                BigDecimal.valueOf ( Long.parseLong ( txtPrice.getText ( ) ) ),
-                setDiscount.isSelected (),
-                BigDecimal.valueOf ( Long.parseLong ( txtDiscount.getText ( ) )) ,
-                setActiveState.isSelected ( ) ,
-                Integer.parseInt ( txtQty.getText ( ) ),
-                formatter.format ( date ),
-                String.valueOf ( cmbProductId.getValue ( ) )
-                );
+                        SimpleDateFormat formatter = new SimpleDateFormat( "dd/MM/yyyy HH:mm" );
+                        Date date = new Date( );
 
-        try {
-            if (new ItemController ().saveBatch ( item )){
-                new Alert ( Alert.AlertType.CONFIRMATION, "Saved").show();
-                getAllItems ();
-                generateId();
+                        Item item = new Item(
+                                txtPropertyId.getText( ) ,
+                                txtBatch.getText( ) ,
+                                BigDecimal.valueOf( Long.parseLong( txtPrice.getText( ) ) ) ,
+                                setDiscount.isSelected( ) ,
+                                BigDecimal.valueOf( Long.parseLong( txtDiscount.getText( ) ) ) ,
+                                setActiveState.isSelected( ) ,
+                                Integer.parseInt( txtQty.getText( ) ) ,
+                                formatter.format( date ) ,
+                                String.valueOf( cmbProductId.getValue( ) )
+                        );
+
+                        try {
+                            if (new ItemController( ).saveBatch( item )) {
+                                new Alert( Alert.AlertType.CONFIRMATION , "Saved" ).show( );
+                                getAllItems( );
+                                generateId( );
+                            }
+                            else {
+                                new Alert( Alert.AlertType.CONFIRMATION , "Fail" ).show( );
+                            }
+
+                        } catch ( SQLException throwables ) {
+                            throwables.printStackTrace( );
+                        } catch ( ClassNotFoundException e ) {
+                            e.printStackTrace( );
+                        }
+                    }else {
+                        txtQty.setFocusColor( Paint.valueOf( "red" ) );
+                        txtQty.requestFocus();
+                    }
+                }else {
+                    txtDiscount.setFocusColor( Paint.valueOf( "red" ) );
+                    txtDiscount.requestFocus();
+                }
             }else {
-                new Alert ( Alert.AlertType.CONFIRMATION, "Fail").show();
+                txtPrice.setFocusColor( Paint.valueOf( "red" ) );
+                txtPrice.requestFocus();
             }
-
-        } catch ( SQLException throwables ) {
-            throwables.printStackTrace ( );
-        } catch ( ClassNotFoundException e ) {
-            e.printStackTrace ( );
+        }else {
+            txtBatch.setFocusColor( Paint.valueOf( "red" ) );
+            txtBatch.requestFocus();
         }
     }
 

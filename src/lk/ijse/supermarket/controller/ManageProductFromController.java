@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class ManageProductFromController {
     public AnchorPane root;
@@ -85,15 +86,6 @@ public class ManageProductFromController {
         }
     }
 
-    public void setUI(String location){
-        try {
-            this.root.getChildren ().clear ();
-            this.root.getChildren ().add ( FXMLLoader.load( getClass ().getResource ( "../view/" + location ) ) );
-        } catch ( IOException e ) {
-            e.printStackTrace ( );
-        }
-    }
-
     public void getAllProduct(){
         try {
             List< Product > all = new ProductController ( ).getAll ( );
@@ -135,33 +127,56 @@ public class ManageProductFromController {
         }
     }
 
-    public void btnBackOnAction ( MouseEvent mouseEvent ) {
-        setUI ( "AdminDashBordForm.fxml" );
-    }
-
     public void btnSaveOnAction ( ActionEvent actionEvent ) {
-        Product product = new Product (
-                txtProductId.getText ( ) ,
-                txtProductName.getText ( ) ,
-                txtProductDescription.getText ( ) ,
-                txtSpec.getText ( ) ,
-                txtDisplayName.getText ( ) ,
-                checkAvailability.isSelected ( ) ,
-                checkState.isSelected ( ) ,
-                txtBrands.getText ( )
-        );
-        try {
-            if (new ProductController ().saveProduct ( product )){
-                new Alert ( Alert.AlertType.CONFIRMATION,"Saved @!" ).show ();
-                getAllProduct ();
-                generateId();
+        if (Pattern.compile( "^[A-z]{1,10}" ).matcher( txtProductName.getText( ) ).matches( )) {
+            if (Pattern.compile( "^[A-z]{1,10}" ).matcher( txtProductDescription.getText( ) ).matches( )) {
+                if (Pattern.compile( "^[A-z]{1,10}" ).matcher( txtSpec.getText( ) ).matches( )) {
+                    if (Pattern.compile( "^[A-z]{1,10}" ).matcher( txtDisplayName.getText( ) ).matches( )) {
+                        if (Pattern.compile( "^[A-z]{1,10}" ).matcher( txtBrands.getText( ) ).matches( )) {
+
+                            Product product = new Product(
+                                    txtProductId.getText( ) ,
+                                    txtProductName.getText( ) ,
+                                    txtProductDescription.getText( ) ,
+                                    txtSpec.getText( ) ,
+                                    txtDisplayName.getText( ) ,
+                                    checkAvailability.isSelected( ) ,
+                                    checkState.isSelected( ) ,
+                                    txtBrands.getText( )
+                            );
+                            try {
+                                if (new ProductController( ).saveProduct( product )) {
+                                    new Alert( Alert.AlertType.CONFIRMATION , "Saved @!" ).show( );
+                                    getAllProduct( );
+                                    generateId( );
+                                }
+                                else {
+                                    new Alert( Alert.AlertType.ERROR , "Failed @!" ).show( );
+                                }
+                            } catch ( SQLException throwables ) {
+                                throwables.printStackTrace( );
+                            } catch ( ClassNotFoundException e ) {
+                                e.printStackTrace( );
+                            }
+                        }else {
+                            txtBrands.setFocusColor( Paint.valueOf( "red" ) );
+                            txtBrands.requestFocus();
+                        }
+                    }else {
+                        txtDisplayName.setFocusColor( Paint.valueOf( "red" ) );
+                        txtDisplayName.requestFocus();
+                    }
+                }else {
+                    txtSpec.setFocusColor( Paint.valueOf( "red" ) );
+                    txtSpec.requestFocus();
+                }
             }else {
-                new Alert ( Alert.AlertType.ERROR,"Failed @!" ).show ();
+                txtProductDescription.setFocusColor( Paint.valueOf( "red" ) );
+                txtProductDescription.requestFocus();
             }
-        } catch ( SQLException throwables ) {
-            throwables.printStackTrace ( );
-        } catch ( ClassNotFoundException e ) {
-            e.printStackTrace ( );
+        }else {
+            txtProductName.setFocusColor( Paint.valueOf( "red" ) );
+            txtProductName.requestFocus();
         }
     }
 

@@ -8,20 +8,20 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import lk.ijse.supermarket.model.User;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.regex.Pattern;
 
 public class CashierLoginFormController {
     public JFXPasswordField txtPassword;
     public JFXButton btnLogin;
     public JFXButton btnCancel;
     public JFXTextField txtUserId;
-
     public static String userId;
-
 
     public void loginOnAction ( ActionEvent actionEvent ) {
         try {
@@ -64,8 +64,22 @@ public class CashierLoginFormController {
     }
 
     public void txtUserNameKeyReleasedOnAction ( KeyEvent keyEvent ) {
+        if ( Pattern.compile( "^[1,9]{1,5}$").matcher( txtUserId.getText()).matches()) {
+            btnLogin.setDisable ( false );
+            txtUserId.setFocusColor( Paint.valueOf( "blue"));
+        }else {
+            txtUserId.setFocusColor(Paint.valueOf("red"));
+            btnLogin.setDisable ( true );
+        }
     }
 
     public void txtPwKeyReleasedOnAction ( KeyEvent keyEvent ) {
+        if (Pattern.compile( "^[0-9]{1,4}$").matcher( txtPassword.getText()).matches()) {
+            btnLogin.setDisable ( false );
+            txtPassword.setFocusColor( Paint.valueOf( "blue"));
+        }else {
+            txtPassword.setFocusColor( Paint.valueOf( "red"));
+            btnLogin.setDisable ( true );
+        }
     }
 }

@@ -19,6 +19,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import lk.ijse.supermarket.model.*;
@@ -33,6 +34,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class CashierFormController {
     public JFXListView list;
@@ -150,72 +152,117 @@ public class CashierFormController {
     }
 
     public void btnAddOnAction ( ActionEvent actionEvent ) {
-        String date = lblDate.getText( );
-        String time = lblTime.getText( );
-        String dateAndTime = (date+"/"+time);
-        String cashierId = CashierLoginFormController.userId;
+        if (Pattern.compile( "^[A-Z]{1}[0-9]{1,5}" ).matcher( txtCusId.getText( ) ).matches( )) {
+            if (Pattern.compile( "^[A-z]{1,10}" ).matcher( txtCusType.getText( ) ).matches( )) {
+                if (Pattern.compile( "^[A-z]{1,8}" ).matcher( txtCusName.getText( ) ).matches( )) {
+                    if (Pattern.compile( "^[A-z]{1,10}" ).matcher( txtCusAddress.getText( ) ).matches( )) {
+                        if (Pattern.compile( "^[A-z]{1,9}" ).matcher( txtCusCity.getText( ) ).matches( )) {
+                            if (Pattern.compile( "^[A-z]{1,9}" ).matcher( txtCusProvince.getText( ) ).matches( )) {
+                                if (Pattern.compile( "^[0-9]{9,10}" ).matcher( txtCusContact.getText( ) ).matches( )) {
+                                    String date = lblDate.getText( );
+                                    String time = lblTime.getText( );
+                                    String dateAndTime = (date + "/" + time);
+                                    String cashierId = CashierLoginFormController.userId;
 
-        int qty = Integer.parseInt( txtOrderQty.getText( ) );
-        double uniPrice = Double.parseDouble(txtUnitPrice.getText( ));
-        double dic = Double.parseDouble( txtDiscount.getText( ) );
+                                    int qty = Integer.parseInt( txtOrderQty.getText( ) );
+                                    double uniPrice = Double.parseDouble( txtUnitPrice.getText( ) );
+                                    double dic = Double.parseDouble( txtDiscount.getText( ) );
 
-        double dicTot = (dic * qty);
-        double subTot = (uniPrice * qty) - (dic * qty);
+                                    double dicTot = (dic * qty);
+                                    double subTot = (uniPrice * qty) - (dic * qty);
 
-        TempData tempData = new TempData(
-                txtOrderId.getText(),
-                dateAndTime,
-                txtCusId.getText(),
-                txtCusType.getText(),
-                txtCusName.getText(),
-                txtCusAddress.getText(),
-                txtCusCity.getText(),
-                txtCusProvince.getText(),
-                Integer.parseInt( txtCusContact.getText() ),
-                cashierId,
-                subTot
-        );
+                                    TempData tempData = new TempData(
+                                            txtOrderId.getText( ) ,
+                                            dateAndTime ,
+                                            txtCusId.getText( ) ,
+                                            txtCusType.getText( ) ,
+                                            txtCusName.getText( ) ,
+                                            txtCusAddress.getText( ) ,
+                                            txtCusCity.getText( ) ,
+                                            txtCusProvince.getText( ) ,
+                                            Integer.parseInt( txtCusContact.getText( ) ) ,
+                                            cashierId ,
+                                            subTot
+                                    );
 
-        int rowNumber1 = isExistsTempData( tempData );
+                                    int rowNumber1 = isExistsTempData( tempData );
 
-        if (rowNumber1==-1){
-            temps.add( tempData );
-            tblTempOrder.refresh();
-        }else {
-            tblTempOrder.refresh();
-        }
+                                    if (rowNumber1 == -1) {
+                                        temps.add( tempData );
+                                        tblTempOrder.refresh( );
+                                    }
+                                    else {
+                                        tblTempOrder.refresh( );
+                                    }
 
-            TempTable tempTable = new TempTable(
-                    txtOrderId.getText(),
-                    String.valueOf( cmbSelectPropertyId.getValue( ) ) ,
-                    txtProductName.getText( ) ,
-                     Double.parseDouble ( txtUnitPrice.getText ( ) ),
-                    Integer.parseInt( txtOrderQty.getText( ) ) ,
-                    Double.parseDouble( String.valueOf( dicTot ) )  ,
-                    Double.parseDouble( String.valueOf( subTot ) )
-            );
+                                    TempTable tempTable = new TempTable(
+                                            txtOrderId.getText( ) ,
+                                            String.valueOf( cmbSelectPropertyId.getValue( ) ) ,
+                                            txtProductName.getText( ) ,
+                                            Double.parseDouble( txtUnitPrice.getText( ) ) ,
+                                            Integer.parseInt( txtOrderQty.getText( ) ) ,
+                                            Double.parseDouble( String.valueOf( dicTot ) ) ,
+                                            Double.parseDouble( String.valueOf( subTot ) )
+                                    );
 
-            int rowNumber = isExists(tempTable);
-            if (rowNumber==-1){
-                if (Integer.parseInt( txtQty.getText() )>=Integer.parseInt( txtOrderQty.getText() )){
-                    tempTableArray.add( tempTable );
-                    getAllProcessingOrder();
-                }else {
-                    new Alert( Alert.AlertType.WARNING,"Out of Bounds" ).show();
+                                    int rowNumber = isExists( tempTable );
+                                    if (rowNumber == -1) {
+                                        if (Integer.parseInt( txtQty.getText( ) ) >= Integer.parseInt( txtOrderQty.getText( ) )) {
+                                            tempTableArray.add( tempTable );
+                                            getAllProcessingOrder( );
+                                        }
+                                        else {
+                                            new Alert( Alert.AlertType.WARNING , "Out of Bounds" ).show( );
+                                        }
+                                    }
+                                    else {
+                                        if (Integer.parseInt( txtQty.getText( ) ) >= tempTableArray.get( rowNumber ).getQty( ) + Integer.parseInt( txtOrderQty.getText( ) )) {
+                                            tempTableArray.get( rowNumber ).setQty( tempTableArray.get( rowNumber ).getQty( ) + Integer.parseInt( txtOrderQty.getText( ) ) );
+                                            tempTableArray.get( rowNumber ).setSubTotal( tempTableArray.get( rowNumber ).getSubTotal( ) + subTot );
+                                            tempTableArray.get( rowNumber ).setDiscount( tempTableArray.get( rowNumber ).getDiscount( ) + dicTot );
+                                            tblTempOrder.refresh( );
+                                        }
+                                        else {
+                                            new Alert( Alert.AlertType.WARNING , "Out of Bounds" ).show( );
+                                        }
+                                    }
+                                    getAllProcessingOrder( );
+                                    generateTotal( );
+                                }
+                                else {
+                                    txtCusContact.setFocusColor( Paint.valueOf( "red" ) );
+                                    txtCusContact.requestFocus( );
+                                }
+                            }
+                            else {
+                                txtCusProvince.setFocusColor( Paint.valueOf( "red" ) );
+                                txtCusProvince.requestFocus( );
+                            }
+                        }
+                        else {
+                            txtCusCity.setFocusColor( Paint.valueOf( "red" ) );
+                            txtCusCity.requestFocus( );
+                        }
+                    }
+                    else {
+                        txtCusAddress.setFocusColor( Paint.valueOf( "red" ) );
+                        txtCusAddress.requestFocus( );
+                    }
                 }
-            }else {
-                if (Integer.parseInt( txtQty.getText() )>=tempTableArray.get( rowNumber ).getQty()+Integer.parseInt( txtOrderQty.getText() )){
-                    tempTableArray.get( rowNumber ).setQty( tempTableArray.get( rowNumber ).getQty()+Integer.parseInt( txtOrderQty.getText() ) );
-                    tempTableArray.get( rowNumber ).setSubTotal( tempTableArray.get( rowNumber ).getSubTotal()+subTot);
-                    tempTableArray.get( rowNumber ).setDiscount( tempTableArray.get( rowNumber ).getDiscount()+dicTot);
-                    tblTempOrder.refresh();
-                }else {
-                    new Alert( Alert.AlertType.WARNING,"Out of Bounds" ).show();
+                else {
+                    txtCusName.setFocusColor( Paint.valueOf( "red" ) );
+                    txtCusName.requestFocus( );
                 }
             }
-
-        getAllProcessingOrder();
-        generateTotal();
+            else {
+                txtCusType.setFocusColor( Paint.valueOf( "red" ) );
+                txtCusType.requestFocus( );
+            }
+        }
+        else {
+            txtCusId.setFocusColor( Paint.valueOf( "red" ) );
+            txtCusId.requestFocus( );
+        }
     }
 
     private int isExistsTempData ( TempData tempData ) {

@@ -13,6 +13,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Paint;
 import lk.ijse.supermarket.model.User;
 import lk.ijse.supermarket.view.tm.ProductTM;
 import lk.ijse.supermarket.view.tm.UserTm;
@@ -20,6 +21,7 @@ import lk.ijse.supermarket.view.tm.UserTm;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class ManageUserFormController {
     public AnchorPane root;
@@ -87,25 +89,42 @@ public class ManageUserFormController {
     }
 
     public void btnSaveOnAction ( ActionEvent actionEvent ) {
-        User user = new User (
-                Integer.parseInt ( txtUserId.getText ( ) ) ,
-                txtUserName.getText ( ) ,
-                txtPassword.getText ( ) ,
-                chetActiveState.isSelected ( ) ,
-                txtUserType.getText ( )
-        );
-        try {
-            if (new UserController ().saveUser ( user )){
-                new Alert ( Alert.AlertType.CONFIRMATION,"User Saved!" ).show ();
-                getAllUsers();
-                setUserId();
+        if (Pattern.compile( "^[A-z]{1,10}" ).matcher( txtUserName.getText( ) ).matches( )) {
+            if (Pattern.compile( "^[0-9]{1,10}" ).matcher( txtPassword.getText( ) ).matches( )) {
+                if (Pattern.compile( "^[A-z]{1,10}" ).matcher( txtUserType.getText( ) ).matches( )) {
+
+                    User user = new User(
+                            Integer.parseInt( txtUserId.getText( ) ) ,
+                            txtUserName.getText( ) ,
+                            txtPassword.getText( ) ,
+                            chetActiveState.isSelected( ) ,
+                            txtUserType.getText( )
+                    );
+                    try {
+                        if (new UserController( ).saveUser( user )) {
+                            new Alert( Alert.AlertType.CONFIRMATION , "User Saved!" ).show( );
+                            getAllUsers( );
+                            setUserId( );
+                        }
+                        else {
+                            new Alert( Alert.AlertType.ERROR , "Fail!" ).show( );
+                        }
+                    } catch ( SQLException throwables ) {
+                        throwables.printStackTrace( );
+                    } catch ( ClassNotFoundException e ) {
+                        e.printStackTrace( );
+                    }
+                }else {
+                    txtUserType.setFocusColor( Paint.valueOf( "red" ) );
+                    txtUserType.requestFocus();
+                }
             }else {
-                new Alert ( Alert.AlertType.ERROR,"Fail!" ).show ();
+                txtPassword.setFocusColor( Paint.valueOf( "red" ) );
+                txtPassword.requestFocus();
             }
-        } catch ( SQLException throwables ) {
-            throwables.printStackTrace ( );
-        } catch ( ClassNotFoundException e ) {
-            e.printStackTrace ( );
+        }else {
+            txtUserName.setFocusColor( Paint.valueOf( "red" ) );
+            txtUserName.requestFocus();
         }
     }
 
