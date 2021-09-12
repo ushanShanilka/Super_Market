@@ -71,9 +71,282 @@ public class CashierFormController {
     public JFXButton btnPlaceOrder;
     public JFXButton btnNew;
 
-    ArrayList< TempData > temps = new ArrayList<>( );
+    static ArrayList< TempData > temps = new ArrayList<>( );
 
-    ArrayList< TempTable > tempTableArray = new ArrayList<>( );
+    static ArrayList< TempTable > tempTableArray = new ArrayList<>( );
+
+    public void btnAddOnAction ( ActionEvent actionEvent ) {
+        if (Pattern.compile( "^[A-Z]{1}[0-9]{1,5}" ).matcher( txtCusId.getText( ) ).matches( )) {
+            if (Pattern.compile( "^[A-z]{1,10}" ).matcher( txtCusType.getText( ) ).matches( )) {
+                if (Pattern.compile( "^[A-z]{1,8}" ).matcher( txtCusName.getText( ) ).matches( )) {
+                    if (Pattern.compile( "^[A-z]{1,10}" ).matcher( txtCusAddress.getText( ) ).matches( )) {
+                        if (Pattern.compile( "^[A-z]{1,9}" ).matcher( txtCusCity.getText( ) ).matches( )) {
+                            if (Pattern.compile( "^[A-z]{1,9}" ).matcher( txtCusProvince.getText( ) ).matches( )) {
+                                if (Pattern.compile( "^[0-9]{9,10}" ).matcher( txtCusContact.getText( ) ).matches( )) {
+                                    if (Pattern.compile( "^[A-z]{1,10}( )[A-z]{1,10}" ).matcher( txtProductName.getText( ) ).matches( )) {
+                                        if (Pattern.compile( "^[0-9]{1,10}" ).matcher( txtOrderQty.getText( ) ).matches( )) {
+                                            String date = lblDate.getText( );
+                                            String time = lblTime.getText( );
+                                            String dateAndTime = (date + "/" + time);
+                                            String cashierId = CashierLoginFormController.userId;
+
+                                            int qty = Integer.parseInt( txtOrderQty.getText( ) );
+                                            double uniPrice = Double.parseDouble( txtUnitPrice.getText( ) );
+                                            double dic = Double.parseDouble( txtDiscount.getText( ) );
+
+                                            double dicTot = (dic * qty);
+                                            double subTot = (uniPrice * qty) - (dic * qty);
+
+                                            TempData tempData = new TempData(
+                                                    txtOrderId.getText( ) ,
+                                                    dateAndTime ,
+                                                    txtCusId.getText( ) ,
+                                                    txtCusType.getText( ) ,
+                                                    txtCusName.getText( ) ,
+                                                    txtCusAddress.getText( ) ,
+                                                    txtCusCity.getText( ) ,
+                                                    txtCusProvince.getText( ) ,
+                                                    Integer.parseInt( txtCusContact.getText( ) ) ,
+                                                    cashierId ,
+                                                    subTot
+                                            );
+
+                                            int rowNumber1 = isExistsTempData( tempData );
+
+                                            if (rowNumber1==-1) {
+                                                temps.add( tempData );
+                                                tblTempOrder.refresh( );
+                                            }
+                                            else {
+                                                tblTempOrder.refresh( );
+                                            }
+
+                                            TempTable tempTable = new TempTable(
+                                                    txtOrderId.getText( ) ,
+                                                    String.valueOf( cmbSelectPropertyId.getValue( ) ) ,
+                                                    txtProductName.getText( ) ,
+                                                    Double.parseDouble( txtUnitPrice.getText( ) ) ,
+                                                    Integer.parseInt( txtOrderQty.getText( ) ) ,
+                                                    Double.parseDouble( String.valueOf( dicTot ) ) ,
+                                                    Double.parseDouble( String.valueOf( subTot ) )
+                                            );
+
+                                            int rowNumber = isExists( tempTable );
+                                            if (rowNumber==-1) {
+                                                if (Integer.parseInt( txtQty.getText( ) ) >= Integer.parseInt( txtOrderQty.getText( ) )) {
+                                                    tempTableArray.add( tempTable );
+                                                    getAllProcessingOrder( );
+                                                }
+                                                else {
+                                                    new Alert( Alert.AlertType.WARNING , "Out of Bounds" ).show( );
+                                                }
+                                            }
+                                            else {
+                                                if (Integer.parseInt( txtQty.getText( ) ) >= tempTableArray.get( rowNumber ).getQty( ) + Integer.parseInt( txtOrderQty.getText( ) )) {
+                                                    tempTableArray.get( rowNumber ).setQty( tempTableArray.get( rowNumber ).getQty( ) + Integer.parseInt( txtOrderQty.getText( ) ) );
+                                                    tempTableArray.get( rowNumber ).setSubTotal( tempTableArray.get( rowNumber ).getSubTotal( ) + subTot );
+                                                    tempTableArray.get( rowNumber ).setDiscount( tempTableArray.get( rowNumber ).getDiscount( ) + dicTot );
+                                                    tblTempOrder.refresh( );
+                                                }else {
+                                                    new Alert( Alert.AlertType.WARNING , "Out of Bounds" ).show( );
+                                                }
+                                            }
+                                            getAllProcessingOrder( );
+                                            generateTotal( );
+                                        }else {
+                                            txtOrderQty.setFocusColor( Paint.valueOf( "red" ) );
+                                            txtOrderQty.requestFocus( );
+                                        }
+                                    }else {
+                                        txtProductName.setFocusColor( Paint.valueOf( "red" ) );
+                                        txtProductName.requestFocus( );
+                                    }
+                                }else {
+                                    txtCusContact.setFocusColor( Paint.valueOf( "red" ) );
+                                    txtCusContact.requestFocus( );
+                                }
+                            }else {
+                                txtCusProvince.setFocusColor( Paint.valueOf( "red" ) );
+                                txtCusProvince.requestFocus( );
+                            }
+                        }else {
+                            txtCusCity.setFocusColor( Paint.valueOf( "red" ) );
+                            txtCusCity.requestFocus( );
+                        }
+                    }else {
+                        txtCusAddress.setFocusColor( Paint.valueOf( "red" ) );
+                        txtCusAddress.requestFocus( );
+                    }
+                }else {
+                    txtCusName.setFocusColor( Paint.valueOf( "red" ) );
+                    txtCusName.requestFocus( );
+                }
+            }else {
+                txtCusType.setFocusColor( Paint.valueOf( "red" ) );
+                txtCusType.requestFocus( );
+            }
+        }else {
+            txtCusId.setFocusColor( Paint.valueOf( "red" ) );
+            txtCusId.requestFocus( );
+        }
+    }
+
+    public void btnConfirmOnAction ( ActionEvent actionEvent ) {
+        try{
+            getAllOrderIdFromArray();
+            getAllPropertyId();
+            clear();
+        }catch ( NullPointerException e ){
+
+        }
+    }
+
+    public void cmbSelectPropertyId ( ActionEvent actionEvent ) {
+        try {
+            List< Item > allItems = new ItemController( ).getAllActiveStateItems( );
+
+            for ( Item item:allItems) {
+                if (cmbSelectPropertyId.getValue().equals( item.getPropertyId() )){
+                    txtUnitPrice.setText( String.valueOf( item.getPrice() ) );
+                    txtQty.setText( String.valueOf( item.getQty() ) );
+                    txtDiscount.setText( String.valueOf( item.getDiscount() ) );
+                    Product product = new ProductController( ).searchProduct( String.valueOf( item.getProductId( ) ) );
+                    txtProductName.setText( product.getDisplayName() );
+                }
+            }
+        } catch ( SQLException throwables ) {
+            throwables.printStackTrace( );
+        } catch ( ClassNotFoundException e ) {
+            e.printStackTrace( );
+        }catch ( NullPointerException e ){
+
+        }
+    }
+
+    public void click ( MouseEvent mouseEvent ) {
+        for ( TempData data:temps ) {
+            if (this.list.getSelectionModel().selectedItemProperty().getValue().equals( data.getOrderId() )){
+                lblCashierId.setText(data.getCashierId() );
+                txtOrderId.setText( data.getOrderId() );
+                txtCusId.setText( data.getCusId() );
+                txtCusType.setText( data.getCusType() );
+                txtCusName.setText(data.getCusName());
+                txtCusAddress.setText(data.getCusAddress());
+                txtCusCity.setText(data.getCusCity());
+                txtCusProvince.setText(data.getCusProvince());
+                txtCusContact.setText( String.valueOf( data.getCusContact() ) );
+            }
+        }
+        ObservableList< TempOrderTM > list = FXCollections.observableArrayList( );
+
+        for ( TempTable data:tempTableArray) {
+            JFXButton btn = new JFXButton( "Delete" );
+            if (this.list.getSelectionModel().selectedItemProperty().getValue().equals( data.getOrderId() )){
+                list.add( new TempOrderTM( data.getPropertyId(),data.getProductName(),data.getUnitPrice(),data.getQty(),data.getDiscount(),data.getSubTotal(),btn ) );
+            }
+            btn.setStyle ( "-fx-background-color: #ff7675;-fx-cursor: hand" );
+            btn.setOnAction( (e)->{
+                for ( int i = 0; i < tempTableArray.size( ); i++ ) {
+                    TempTable table = tempTableArray.get( i );
+                    if (txtOrderId.getText( ).equals( table.getOrderId( ) )){
+                        if (data.getPropertyId( ).equals( table.getPropertyId( ) )){
+                            boolean remove = tempTableArray.remove( table );
+                            if (remove){
+                                getAllProcessingOrder();
+                            }
+                        }
+                    }
+                }
+            } );
+            lblTotal.setText( String.valueOf( data.getSubTotal() ) );
+        }
+        tblTempOrder.setItems( list );
+    }
+
+    public void btnBackOnAction ( MouseEvent mouseEvent ) {
+        Stage stage = (Stage) btnCancel.getScene().getWindow();
+        stage.close();
+
+        try {
+            Scene scene = new Scene ( FXMLLoader.load ( getClass ( ).getResource ( "../view/MainDashBoardForm.fxml" ) ) );
+            Stage primaryStage = new Stage( );
+            primaryStage.setScene( scene );
+            primaryStage.show( );
+        } catch ( IOException e ) {
+            e.printStackTrace ( );
+        }
+    }
+
+    public void btnPlaceOrderOnAction ( ActionEvent actionEvent ) {
+        Customer customer = new Customer(
+                txtCusId.getText( ) ,
+                txtCusType.getText( ) ,
+                txtCusName.getText( ) ,
+                txtCusAddress.getText( ) ,
+                txtCusCity.getText( ) ,
+                txtCusProvince.getText( ) ,
+                Integer.parseInt( txtCusContact.getText( ) )
+        );
+        ArrayList< Order > orders = new ArrayList<>( );
+        Order order = new Order( txtOrderId.getText( ) , lblDate.getText( ) + "/" + lblTime.getText( ) , Double.parseDouble( lblTotal.getText( ) ) , txtCusId.getText( ) , Integer.parseInt( lblCashierId.getText( ) ) );
+        orders.add(order);
+        customer.setOrders(orders);
+
+        ArrayList< OrderDetail > details = new ArrayList<>( );
+
+        for ( TempTable tm : tempTableArray) {
+            if (txtOrderId.getText().equals( tm.getOrderId() )){
+                details.add( new OrderDetail( tm.getQty( ) , tm.getUnitPrice( ) , txtOrderId.getText() , tm.getPropertyId( ) ) );
+            }
+        }
+        order.setDetails( details );
+
+        try {
+            if (new CashierController().saveCustomer( customer )){
+                deleteTempData();
+                new Alert( Alert.AlertType.CONFIRMATION,"Success ! " ).show();
+                getAllOrderIdFromArray();
+                getAllProcessingOrder();
+                tblTempOrder.refresh();
+            }else {
+                new Alert( Alert.AlertType.WARNING,"Fail !" ).show();
+            }
+        } catch ( SQLException throwables ) {
+            throwables.printStackTrace( );
+        }
+    }
+
+    public void btnCancelOnAction ( ActionEvent actionEvent ) {
+        deleteTempData();
+        getAllOrderIdFromArray();
+        getAllProcessingOrder();
+        clear();
+    }
+
+    public void btnNewOnAction ( ActionEvent actionEvent ) {
+        clear();
+        txtCusType.requestFocus();
+    }
+
+    public void searchCustomerOnAction ( ActionEvent actionEvent ) {
+        try {
+            Customer customer = new CashierController( ).getCustomer( txtCusId.getText( ) );
+            if (customer!=null){
+                txtCusType.setText( customer.getCusType() );
+                txtCusName.setText( customer.getCusName() );
+                txtCusAddress.setText( customer.getCusAddress() );
+                txtCusCity.setText( customer.getCusCity() );
+                txtCusProvince.setText( customer.getCusProvince() );
+                txtCusContact.setText( String.valueOf( customer.getCusContact() ) );
+            }else {
+                new Alert( Alert.AlertType.ERROR,"Empty Customer !" ).show();
+            }
+        } catch ( SQLException throwables ) {
+            throwables.printStackTrace( );
+        } catch ( ClassNotFoundException e ) {
+            e.printStackTrace( );
+        }
+    }
 
     public void initialize(){
         colPropertyId.setCellValueFactory( new PropertyValueFactory<>( "propertyId" ) );
@@ -86,9 +359,9 @@ public class CashierFormController {
 
         getAllPropertyId();
         generateDateTime();
-        lblCashierId.setText(  CashierLoginFormController.userId );
         setOrderId();
         setCustomerId();
+        lblCashierId.setText(  CashierLoginFormController.userId );
     }
 
     private void setOrderId(){
@@ -144,127 +417,6 @@ public class CashierFormController {
         }
     }
 
-    public void btnCancelOnAction ( ActionEvent actionEvent ) {
-        deleteTempData();
-        getAllOrderIdFromArray();
-        getAllProcessingOrder();
-        clear();
-    }
-
-    public void btnAddOnAction ( ActionEvent actionEvent ) {
-        if (Pattern.compile( "^[A-Z]{1}[0-9]{1,5}" ).matcher( txtCusId.getText( ) ).matches( )) {
-            if (Pattern.compile( "^[A-z]{1,10}" ).matcher( txtCusType.getText( ) ).matches( )) {
-                if (Pattern.compile( "^[A-z]{1,8}" ).matcher( txtCusName.getText( ) ).matches( )) {
-                    if (Pattern.compile( "^[A-z]{1,10}" ).matcher( txtCusAddress.getText( ) ).matches( )) {
-                        if (Pattern.compile( "^[A-z]{1,9}" ).matcher( txtCusCity.getText( ) ).matches( )) {
-                            if (Pattern.compile( "^[A-z]{1,9}" ).matcher( txtCusProvince.getText( ) ).matches( )) {
-                                if (Pattern.compile( "^[0-9]{9,10}" ).matcher( txtCusContact.getText( ) ).matches( )) {
-                                    String date = lblDate.getText( );
-                                    String time = lblTime.getText( );
-                                    String dateAndTime = (date + "/" + time);
-                                    String cashierId = CashierLoginFormController.userId;
-
-                                    int qty = Integer.parseInt( txtOrderQty.getText( ) );
-                                    double uniPrice = Double.parseDouble( txtUnitPrice.getText( ) );
-                                    double dic = Double.parseDouble( txtDiscount.getText( ) );
-
-                                    double dicTot = (dic * qty);
-                                    double subTot = (uniPrice * qty) - (dic * qty);
-
-                                    TempData tempData = new TempData(
-                                            txtOrderId.getText( ) ,
-                                            dateAndTime ,
-                                            txtCusId.getText( ) ,
-                                            txtCusType.getText( ) ,
-                                            txtCusName.getText( ) ,
-                                            txtCusAddress.getText( ) ,
-                                            txtCusCity.getText( ) ,
-                                            txtCusProvince.getText( ) ,
-                                            Integer.parseInt( txtCusContact.getText( ) ) ,
-                                            cashierId ,
-                                            subTot
-                                    );
-
-                                    int rowNumber1 = isExistsTempData( tempData );
-
-                                    if (rowNumber1 == -1) {
-                                        temps.add( tempData );
-                                        tblTempOrder.refresh( );
-                                    }
-                                    else {
-                                        tblTempOrder.refresh( );
-                                    }
-
-                                    TempTable tempTable = new TempTable(
-                                            txtOrderId.getText( ) ,
-                                            String.valueOf( cmbSelectPropertyId.getValue( ) ) ,
-                                            txtProductName.getText( ) ,
-                                            Double.parseDouble( txtUnitPrice.getText( ) ) ,
-                                            Integer.parseInt( txtOrderQty.getText( ) ) ,
-                                            Double.parseDouble( String.valueOf( dicTot ) ) ,
-                                            Double.parseDouble( String.valueOf( subTot ) )
-                                    );
-
-                                    int rowNumber = isExists( tempTable );
-                                    if (rowNumber == -1) {
-                                        if (Integer.parseInt( txtQty.getText( ) ) >= Integer.parseInt( txtOrderQty.getText( ) )) {
-                                            tempTableArray.add( tempTable );
-                                            getAllProcessingOrder( );
-                                        }
-                                        else {
-                                            new Alert( Alert.AlertType.WARNING , "Out of Bounds" ).show( );
-                                        }
-                                    }
-                                    else {
-                                        if (Integer.parseInt( txtQty.getText( ) ) >= tempTableArray.get( rowNumber ).getQty( ) + Integer.parseInt( txtOrderQty.getText( ) )) {
-                                            tempTableArray.get( rowNumber ).setQty( tempTableArray.get( rowNumber ).getQty( ) + Integer.parseInt( txtOrderQty.getText( ) ) );
-                                            tempTableArray.get( rowNumber ).setSubTotal( tempTableArray.get( rowNumber ).getSubTotal( ) + subTot );
-                                            tempTableArray.get( rowNumber ).setDiscount( tempTableArray.get( rowNumber ).getDiscount( ) + dicTot );
-                                            tblTempOrder.refresh( );
-                                        }
-                                        else {
-                                            new Alert( Alert.AlertType.WARNING , "Out of Bounds" ).show( );
-                                        }
-                                    }
-                                    getAllProcessingOrder( );
-                                    generateTotal( );
-                                }
-                                else {
-                                    txtCusContact.setFocusColor( Paint.valueOf( "red" ) );
-                                    txtCusContact.requestFocus( );
-                                }
-                            }
-                            else {
-                                txtCusProvince.setFocusColor( Paint.valueOf( "red" ) );
-                                txtCusProvince.requestFocus( );
-                            }
-                        }
-                        else {
-                            txtCusCity.setFocusColor( Paint.valueOf( "red" ) );
-                            txtCusCity.requestFocus( );
-                        }
-                    }
-                    else {
-                        txtCusAddress.setFocusColor( Paint.valueOf( "red" ) );
-                        txtCusAddress.requestFocus( );
-                    }
-                }
-                else {
-                    txtCusName.setFocusColor( Paint.valueOf( "red" ) );
-                    txtCusName.requestFocus( );
-                }
-            }
-            else {
-                txtCusType.setFocusColor( Paint.valueOf( "red" ) );
-                txtCusType.requestFocus( );
-            }
-        }
-        else {
-            txtCusId.setFocusColor( Paint.valueOf( "red" ) );
-            txtCusId.requestFocus( );
-        }
-    }
-
     private int isExistsTempData ( TempData tempData ) {
         for ( int i = 0; i < temps.size( ); i++ ) {
             if (temps.get( i ).getOrderId().equals( tempData.getOrderId() )){
@@ -296,24 +448,32 @@ public class CashierFormController {
         lblTotal.setText( String.valueOf( totalCost ) );
     }
 
-    public void btnConfirmOnAction ( ActionEvent actionEvent ) {
-        try{
-        getAllOrderIdFromArray();
-        getAllPropertyId();
-        clear();
-        }catch ( NullPointerException e ){
-
-        }
-    }
-
     public void getAllProcessingOrder(){
         tblTempOrder.setItems( null );
         ObservableList< TempOrderTM > list = FXCollections.observableArrayList( );
 
         for ( TempTable data:tempTableArray) {
+            JFXButton btn = new JFXButton( "Delete" );
             if (txtOrderId.getText().equals( data.getOrderId() )){
-                list.add( new TempOrderTM( data.getPropertyId(),data.getProductName(),data.getUnitPrice(),data.getQty(),data.getDiscount(),data.getSubTotal() ) );
+                list.add( new TempOrderTM( data.getPropertyId(),data.getProductName(),
+                                           data.getUnitPrice(),data.getQty(),
+                                           data.getDiscount(),data.getSubTotal(),btn
+                ) );
             }
+            btn.setStyle ( "-fx-background-color: #ff7675;-fx-cursor: hand" );
+            btn.setOnAction( (e)->{
+                for ( int i = 0; i < tempTableArray.size( ); i++ ) {
+                    TempTable table = tempTableArray.get( i );
+                    if (txtOrderId.getText( ).equals( table.getOrderId( ) )){
+                        if (data.getPropertyId( ).equals( table.getPropertyId( ) )){
+                            boolean remove = tempTableArray.remove( table );
+                            if (remove){
+                                getAllProcessingOrder();
+                            }
+                        }
+                    }
+                }
+            } );
         }
         tblTempOrder.setItems( list );
     }
@@ -324,53 +484,6 @@ public class CashierFormController {
             obs.add( data.getOrderId() );
         }
         list.setItems( obs );
-    }
-
-    public void click ( MouseEvent mouseEvent ) {
-        for ( TempData data:temps ) {
-            if (this.list.getSelectionModel().selectedItemProperty().getValue().equals( data.getOrderId() )){
-                lblCashierId.setText(data.getCashierId() );
-                txtOrderId.setText( data.getOrderId() );
-                txtCusId.setText( data.getCusId() );
-                txtCusType.setText( data.getCusType() );
-                txtCusName.setText(data.getCusName());
-                txtCusAddress.setText(data.getCusAddress());
-                txtCusCity.setText(data.getCusCity());
-                txtCusProvince.setText(data.getCusProvince());
-                txtCusContact.setText( String.valueOf( data.getCusContact() ) );
-            }
-        }
-        ObservableList< TempOrderTM > list = FXCollections.observableArrayList( );
-
-        for ( TempTable data:tempTableArray) {
-            if (this.list.getSelectionModel().selectedItemProperty().getValue().equals( data.getOrderId() )){
-                list.add( new TempOrderTM( data.getPropertyId(),data.getProductName(),data.getUnitPrice(),data.getQty(),data.getDiscount(),data.getSubTotal() ) );
-            }
-            lblTotal.setText( String.valueOf( data.getSubTotal() ) );
-        }
-        tblTempOrder.setItems( list );
-    }
-
-    public void cmbSelectPropertyId ( ActionEvent actionEvent ) {
-        try {
-            List< Item > allItems = new ItemController( ).getAllActiveStateItems( );
-
-            for ( Item item:allItems) {
-                if (cmbSelectPropertyId.getValue().equals( item.getPropertyId() )){
-                    txtUnitPrice.setText( String.valueOf( item.getPrice() ) );
-                    txtQty.setText( String.valueOf( item.getQty() ) );
-                    txtDiscount.setText( String.valueOf( item.getDiscount() ) );
-                    Product product = new ProductController( ).searchProduct( String.valueOf( item.getProductId( ) ) );
-                    txtProductName.setText( product.getDisplayName() );
-                }
-            }
-        } catch ( SQLException throwables ) {
-            throwables.printStackTrace( );
-        } catch ( ClassNotFoundException e ) {
-            e.printStackTrace( );
-        }catch ( NullPointerException e ){
-
-        }
     }
 
     public void getAllPropertyId(){
@@ -385,59 +498,6 @@ public class CashierFormController {
             throwables.printStackTrace( );
         } catch ( ClassNotFoundException e ) {
             e.printStackTrace( );
-        }
-    }
-
-    public void btnBackOnAction ( MouseEvent mouseEvent ) {
-        Stage stage = (Stage) btnCancel.getScene().getWindow();
-        stage.close();
-
-        try {
-            Scene scene = new Scene ( FXMLLoader.load ( getClass ( ).getResource ( "../view/MainDashBoardForm.fxml" ) ) );
-            Stage primaryStage = new Stage( );
-            primaryStage.setScene( scene );
-            primaryStage.show( );
-        } catch ( IOException e ) {
-            e.printStackTrace ( );
-        }
-    }
-
-    public void btnPlaceOrderOnAction ( ActionEvent actionEvent ) {
-            Customer customer = new Customer(
-                    txtCusId.getText( ) ,
-                    txtCusType.getText( ) ,
-                    txtCusName.getText( ) ,
-                    txtCusAddress.getText( ) ,
-                    txtCusCity.getText( ) ,
-                    txtCusProvince.getText( ) ,
-                    Integer.parseInt( txtCusContact.getText( ) )
-            );
-        ArrayList< Order > orders = new ArrayList<>( );
-        Order order = new Order( txtOrderId.getText( ) , lblDate.getText( ) + "/" + lblTime.getText( ) , Double.parseDouble( lblTotal.getText( ) ) , txtCusId.getText( ) , Integer.parseInt( lblCashierId.getText( ) ) );
-        orders.add(order);
-        customer.setOrders(orders);
-
-        ArrayList< OrderDetail > details = new ArrayList<>( );
-
-        for ( TempTable tm : tempTableArray) {
-            if (txtOrderId.getText().equals( tm.getOrderId() )){
-                details.add( new OrderDetail( tm.getQty( ) , tm.getUnitPrice( ) , txtOrderId.getText() , tm.getPropertyId( ) ) );
-            }
-        }
-        order.setDetails( details );
-
-        try {
-                if (new CashierController().saveCustomer( customer )){
-                    deleteTempData();
-                    new Alert( Alert.AlertType.CONFIRMATION,"Success ! " ).show();
-                    getAllOrderIdFromArray();
-                    getAllProcessingOrder();
-                    tblTempOrder.refresh();
-                }else {
-                    new Alert( Alert.AlertType.WARNING,"Fail !" ).show();
-                }
-        } catch ( SQLException throwables ) {
-            throwables.printStackTrace( );
         }
     }
 
@@ -458,28 +518,4 @@ public class CashierFormController {
         lblTotal.setText( "" );
     }
 
-    public void btnNewOnAction ( ActionEvent actionEvent ) {
-        clear();
-        txtCusType.requestFocus();
-    }
-
-    public void searchCustomerOnAction ( ActionEvent actionEvent ) {
-        try {
-            Customer customer = new CashierController( ).getCustomer( txtCusId.getText( ) );
-            if (customer!=null){
-                txtCusType.setText( customer.getCusType() );
-                txtCusName.setText( customer.getCusName() );
-                txtCusAddress.setText( customer.getCusAddress() );
-                txtCusCity.setText( customer.getCusCity() );
-                txtCusProvince.setText( customer.getCusProvince() );
-                txtCusContact.setText( String.valueOf( customer.getCusContact() ) );
-            }else {
-                new Alert( Alert.AlertType.ERROR,"Empty Customer !" ).show();
-            }
-        } catch ( SQLException throwables ) {
-            throwables.printStackTrace( );
-        } catch ( ClassNotFoundException e ) {
-            e.printStackTrace( );
-        }
-    }
 }

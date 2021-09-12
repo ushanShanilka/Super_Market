@@ -27,6 +27,7 @@ public class AdminDashBordFormController {
 
     public void initialize(){
         countActiveUses ();
+        getAllPendingOrderCount();
     }
 
     public void setUI(String location){
@@ -36,6 +37,24 @@ public class AdminDashBordFormController {
         } catch ( IOException e ) {
             e.printStackTrace ( );
         }
+    }
+
+    public void countActiveUses(){
+        try {
+            List< User > allActiveUsers = new UserController ( ).getAllActiveUsers ( );
+
+            lblCashiersCount.setText ( String.valueOf ( allActiveUsers.size () ) );
+        } catch ( SQLException throwables ) {
+            throwables.printStackTrace ( );
+        } catch ( ClassNotFoundException e ) {
+            e.printStackTrace ( );
+        }
+    }
+
+    private void getAllPendingOrderCount(){
+        int size = CashierFormController.tempTableArray.size( );
+        System.out.println(size );
+        lblPendingOrderCount.setText( String.valueOf( size ) );
     }
 
     public void btnManageItemOnAction ( ActionEvent actionEvent ) {
@@ -69,15 +88,4 @@ public class AdminDashBordFormController {
         }
     }
 
-    public void countActiveUses(){
-        try {
-            List< User > allActiveUsers = new UserController ( ).getAllActiveUsers ( );
-
-            lblCashiersCount.setText ( String.valueOf ( allActiveUsers.size () ) );
-        } catch ( SQLException throwables ) {
-            throwables.printStackTrace ( );
-        } catch ( ClassNotFoundException e ) {
-            e.printStackTrace ( );
-        }
-    }
 }

@@ -1,6 +1,5 @@
 package lk.ijse.supermarket.view.tm;
 
-
 import com.jfoenix.controls.JFXButton;
 
 public class TempOrderTM {
@@ -10,17 +9,19 @@ public class TempOrderTM {
     private int qty;
     private Double discount;
     private Double total;
+    private JFXButton btn;
 
     public TempOrderTM ( ) {
     }
 
-    public TempOrderTM ( String propertyId , String productName , Double unitPrice , int qty , Double discount , Double total ) {
+    public TempOrderTM ( String propertyId , String productName , Double unitPrice , int qty , Double discount , Double total , JFXButton btn ) {
         this.propertyId = propertyId;
         this.productName = productName;
         this.unitPrice = unitPrice;
         this.qty = qty;
         this.discount = discount;
         this.total = total;
+        this.btn = btn;
     }
 
     public String getPropertyId ( ) {
@@ -71,6 +72,14 @@ public class TempOrderTM {
         this.total = total;
     }
 
+    public JFXButton getBtn ( ) {
+        return btn;
+    }
+
+    public void setBtn ( JFXButton btn ) {
+        this.btn = btn;
+    }
+
     @Override
     public String toString ( ) {
         return "TempOrderTM{" +
@@ -80,6 +89,7 @@ public class TempOrderTM {
                ", qty=" + qty +
                ", discount=" + discount +
                ", total=" + total +
+               ", btn=" + btn +
                '}';
     }
 }

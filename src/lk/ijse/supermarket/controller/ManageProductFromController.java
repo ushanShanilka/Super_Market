@@ -128,10 +128,10 @@ public class ManageProductFromController {
     }
 
     public void btnSaveOnAction ( ActionEvent actionEvent ) {
-        if (Pattern.compile( "^[A-z]{1,10}" ).matcher( txtProductName.getText( ) ).matches( )) {
+        if (Pattern.compile( "^[A-z]{1,10}( )[A-z]{1,10}" ).matcher( txtProductName.getText( ) ).matches( )) {
             if (Pattern.compile( "^[A-z]{1,10}" ).matcher( txtProductDescription.getText( ) ).matches( )) {
                 if (Pattern.compile( "^[A-z]{1,10}" ).matcher( txtSpec.getText( ) ).matches( )) {
-                    if (Pattern.compile( "^[A-z]{1,10}" ).matcher( txtDisplayName.getText( ) ).matches( )) {
+                    if (Pattern.compile( "^[A-z]{1,10}( )[A-z]{1,10}" ).matcher( txtDisplayName.getText( ) ).matches( )) {
                         if (Pattern.compile( "^[A-z]{1,10}" ).matcher( txtBrands.getText( ) ).matches( )) {
 
                             Product product = new Product(

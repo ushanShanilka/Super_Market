@@ -130,7 +130,7 @@ public class ManageUserFormController {
 
     public void searchUserOnAction ( ActionEvent actionEvent ) {
         try {
-            User user = new UserController ( ).searchUser ( txtUserId.getText ( ) );
+            User user = new UserController( ).searchUser( txtUserId.getText( ) );
             if (user!=null){
                 txtUserName.setText ( user.getUserName () );
                 txtPassword.setText ( user.getPassword () );
