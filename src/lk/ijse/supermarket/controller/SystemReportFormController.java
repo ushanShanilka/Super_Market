@@ -421,14 +421,7 @@ public class SystemReportFormController {
     public void getMonthlyOrdersOnAction(ActionEvent actionEvent) {
         double total = 00.00;
         try {
-//        LocalDate datePickerValue = datePicker.getValue();
-//        String sMonth = String.valueOf(datePickerValue).split("-")[1];
-//        int iMonth = Integer.parseInt(sMonth);
-//        int calMonth = iMonth+1;
-//
-//        String afterMonth = String.valueOf(datePickerValue).split("-")[0]+"-"+"0"+calMonth+"-"+String.valueOf(datePickerValue).split("-")[2];
-//
-//        pickerToDate.setValue(LocalDate.parse(afterMonth));
+
             LocalDate value = datePicker.getValue();
             LocalDate value1 = pickerToDate.getValue();
 
