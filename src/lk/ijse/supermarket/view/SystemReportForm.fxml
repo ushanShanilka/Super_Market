@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXDatePicker?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
@@ -29,11 +31,21 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </JFXButton>
+            <JFXButton fx:id="btnCusWiseIncome" layoutX="11.0" layoutY="141.0" onAction="#btnCusWiseIncomeOnAction" prefHeight="39.0" prefWidth="106.0" style="-fx-border-color: black;" text="Cus Wise Income">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </JFXButton>
+            <JFXButton fx:id="btnAnnualIncome" layoutX="11.0" layoutY="202.0" onAction="#btnAnnualIncomeOnAction" prefHeight="39.0" prefWidth="106.0" style="-fx-border-color: black;" text="Annual Income">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </JFXButton>
          </children>
       </AnchorPane>
       <Separator layoutX="131.0" layoutY="65.0" orientation="VERTICAL" prefHeight="443.0" prefWidth="9.0" />
       <Separator layoutX="-9.0" layoutY="63.0" prefHeight="5.0" prefWidth="641.0" />
-      <TableView fx:id="tblOrder" layoutX="145.0" layoutY="138.0" prefHeight="353.0" prefWidth="482.0" visible="false">
+      <TableView fx:id="tblOrder" layoutX="145.0" layoutY="138.0" prefHeight="353.0" prefWidth="482.0">
         <columns>
           <TableColumn fx:id="colOrderTblOrderId" prefWidth="53.0" text="Order ID" />
           <TableColumn fx:id="colOrderTblDate" prefWidth="151.0" text="Date" />
@@ -43,7 +55,7 @@
             <TableColumn fx:id="colOrderTblOption" prefWidth="75.0" text="Option" />
         </columns>
       </TableView>
-      <TableView fx:id="tblOrderDetails" layoutX="145.0" layoutY="138.0" prefHeight="353.0" prefWidth="482.0">
+      <TableView fx:id="tblOrderDetails" layoutX="145.0" layoutY="138.0" prefHeight="353.0" prefWidth="482.0" visible="false">
         <columns>
           <TableColumn fx:id="colDetailQty" prefWidth="93.0" text="Qty" />
           <TableColumn fx:id="colDetailUnitPrice" prefWidth="135.0" text="Unit Price" />
@@ -52,6 +64,44 @@
         </columns>
       </TableView>
       <JFXTextField fx:id="txtOrderId" layoutX="435.0" layoutY="82.0" onAction="#txtOrderIdOnAction" prefHeight="25.0" prefWidth="192.0" promptText="Search Order" visible="false" />
-      <JFXTextField fx:id="txtOrderDetails" layoutX="435.0" layoutY="82.0" onAction="#txtOrderDetailsOnAction" prefHeight="25.0" prefWidth="192.0" promptText="Search Order Details" />
+      <JFXTextField fx:id="txtOrderDetails" layoutX="435.0" layoutY="82.0" onAction="#txtOrderDetailsOnAction" prefHeight="25.0" prefWidth="192.0" promptText="Search Order Details" visible="false" />
+      <JFXTextField fx:id="txtCusId" layoutX="435.0" layoutY="82.0" onAction="#txtCusIdOnAction" prefHeight="25.0" prefWidth="145.0" promptText="Search Order By Cus ID" visible="false" />
+      <JFXComboBox fx:id="cmbSelect" layoutX="145.0" layoutY="82.0" onAction="#cmbSelectOnAction" prefHeight="25.0" prefWidth="157.0" promptText="Search By" />
+      <TableView fx:id="tblCusWiseIncome" layoutX="163.0" layoutY="145.0" prefHeight="264.0" prefWidth="447.0" visible="false">
+        <columns>
+          <TableColumn fx:id="colCusId" prefWidth="136.0" text="Customer ID" />
+          <TableColumn fx:id="colOrderId" prefWidth="170.0" text="Order ID" />
+            <TableColumn fx:id="colTotalCost" prefWidth="140.0" text="Total Cost" />
+        </columns>
+      </TableView>
+      <JFXComboBox fx:id="cmbCusId" layoutX="164.0" layoutY="95.0" onAction="#selectCusIdOnAction" prefHeight="25.0" prefWidth="145.0" promptText="Select Customer Id" visible="false" />
+      <Label fx:id="lblTotal" layoutX="424.0" layoutY="445.0" prefHeight="46.0" prefWidth="203.0" text="Total : 00.0LKR" visible="false">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <TableView fx:id="tblAnnualIncome" layoutX="154.0" layoutY="138.0" prefHeight="274.0" prefWidth="456.0" visible="false">
+        <columns>
+          <TableColumn fx:id="colIncomeOrderId" prefWidth="75.0" text="Order ID" />
+          <TableColumn fx:id="colIncomeDate" prefWidth="100.0" text="Order Date" />
+            <TableColumn fx:id="colIncomeTot" prefWidth="89.0" text="Total" />
+            <TableColumn fx:id="colIncomeCusId" prefWidth="101.0" text="Customer ID" />
+            <TableColumn fx:id="colIncomeUserId" prefWidth="90.0" text="User ID" />
+        </columns>
+      </TableView>
+      <JFXComboBox fx:id="cmbAnnual" layoutX="154.0" layoutY="82.0" onAction="#cmbAnnualOnAction" prefHeight="25.0" prefWidth="106.0" promptText="Annual Income" visible="false" />
+      <Label fx:id="lblAnnualTot" layoutX="408.0" layoutY="445.0" prefHeight="46.0" prefWidth="203.0" text="Total : 00.0LKR" visible="false">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <JFXDatePicker fx:id="datePicker" defaultColor="BLACK" layoutX="296.0" layoutY="83.0" prefHeight="25.0" prefWidth="133.0" promptText="From" visible="false">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></JFXDatePicker>
+      <JFXDatePicker fx:id="pickerToDate" defaultColor="BLACK" editable="false" layoutX="477.0" layoutY="84.0" onAction="#getMonthlyOrdersOnAction" prefHeight="25.0" prefWidth="133.0" promptText="To" visible="false">
+         <cursor>
+            <Cursor fx:constant="DEFAULT" />
+         </cursor></JFXDatePicker>
    </children>
 </AnchorPane>

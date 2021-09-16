@@ -13,7 +13,6 @@ public class MainDashBoardFormController {
     public AnchorPane root;
     public JFXButton btnAdmin;
     public JFXButton btnCashier;
-    public JFXButton btnStore;
 
     public void btnAdminOnAction ( ActionEvent actionEvent ) {
         Stage stage = (Stage) btnAdmin.getScene ().getWindow ();

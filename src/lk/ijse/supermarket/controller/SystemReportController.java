@@ -32,6 +32,22 @@ public class SystemReportController {
         return CrudUtil.execute( "DELETE FROM Orders WHERE id=? ",id );
     }
 
+    public List<Order> getAllOrdersByCusId(String cusId) throws SQLException, ClassNotFoundException {
+        ResultSet rst = CrudUtil.execute("SELECT * FROM Orders WHERE customerId=?", cusId);
+        ArrayList<Order> ordersByCusId = new ArrayList<>();
+
+        while (rst.next()){
+            ordersByCusId.add(new Order(
+                    rst.getString(1),
+                    rst.getString(2),
+                    rst.getDouble(3),
+                    rst.getString(4),
+                    rst.getInt(5)
+            ));
+        }
+        return ordersByCusId;
+    }
+
     public Order getOrder(String id) throws SQLException, ClassNotFoundException {
         ResultSet rst = CrudUtil.execute( "SELECT * FROM Orders WHERE id=?" , id );
         while (rst.next()){
@@ -44,6 +60,38 @@ public class SystemReportController {
             );
         }
         return null;
+    }
+
+    public List<Order> getAllOrderByDaily(String date) throws SQLException, ClassNotFoundException {
+        ResultSet rst = CrudUtil.execute("SELECT * FROM Orders WHERE date=?",date);
+        ArrayList<Order> list = new ArrayList<>();
+
+        while (rst.next()){
+            list.add(new Order(
+                    rst.getString(1),
+                    rst.getString(2),
+                    rst.getDouble(3),
+                    rst.getString(4),
+                    rst.getInt(5)
+            ));
+        }
+        return list;
+    }
+
+    public List<Order> getAllOrderByMonthly(String today,String afterMonth) throws SQLException, ClassNotFoundException {
+        ResultSet rst = CrudUtil.execute("SELECT * FROM Orders WHERE date BETWEEN ? AND ?",today,afterMonth);
+        ArrayList<Order> list = new ArrayList<>();
+
+        while (rst.next()){
+            list.add(new Order(
+                    rst.getString(1),
+                    rst.getString(2),
+                    rst.getDouble(3),
+                    rst.getString(4),
+                    rst.getInt(5)
+            ));
+        }
+        return list;
     }
 
     public List< OrderDetail > getAllOrderDetails() throws SQLException, ClassNotFoundException {

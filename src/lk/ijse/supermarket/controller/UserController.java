@@ -81,8 +81,14 @@ public class UserController {
         return activeUsersList;
     }
 
-    public ResultSet generateUserId() throws SQLException, ClassNotFoundException {
+    public int generateUserId() throws SQLException, ClassNotFoundException {
         ResultSet rst = CrudUtil.execute( "SELECT id FROM User ORDER BY id DESC LIMIT 1" );
-        return rst;
+
+        if (rst.next()){
+            int tempId = rst.getInt( 1 );
+            tempId = tempId+1;
+            return tempId;
+        }
+        return 1;
     }
 }

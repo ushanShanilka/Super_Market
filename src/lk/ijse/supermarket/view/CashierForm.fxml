@@ -95,7 +95,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </ImageView>
-      <JFXButton fx:id="btnConfirm" layoutX="638.0" layoutY="488.0" onAction="#btnConfirmOnAction" prefHeight="35.0" prefWidth="74.0" style="-fx-background-color: #7ed6df;" text="Confirm" textFill="WHITE">
+      <JFXButton fx:id="btnConfirm" layoutX="638.0" layoutY="488.0" onAction="#btnConfirmOnAction" prefHeight="22.0" prefWidth="74.0" style="-fx-background-color: #48dbfb;" text="Confirm" textFill="WHITE">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
@@ -105,7 +105,10 @@
             <Font size="17.0" />
          </font>
       </Label>
-      <JFXButton fx:id="btnPlaceOrder" layoutX="629.0" layoutY="542.0" onAction="#btnPlaceOrderOnAction" prefHeight="35.0" prefWidth="85.0" style="-fx-background-color: #3498db;" text="Place Order" textFill="WHITE" />
+      <JFXButton fx:id="btnPlaceOrder" layoutX="629.0" layoutY="542.0" onAction="#btnPlaceOrderOnAction" prefHeight="35.0" prefWidth="85.0" style="-fx-background-color: #3498db;" text="Place Order" textFill="WHITE">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></JFXButton>
       <JFXButton fx:id="btnNew" layoutX="660.0" layoutY="6.0" onAction="#btnNewOnAction" style="-fx-border-color: black;" text="+ New">
          <cursor>
             <Cursor fx:constant="HAND" />

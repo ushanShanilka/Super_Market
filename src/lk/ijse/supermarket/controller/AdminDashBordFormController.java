@@ -24,6 +24,7 @@ public class AdminDashBordFormController {
     public Label lblCashiersCount;
     public Label lblPendingOrderCount;
     public ImageView bntBack;
+    public JFXButton btnCustomer;
 
     public void initialize(){
         countActiveUses ();
@@ -88,4 +89,7 @@ public class AdminDashBordFormController {
         }
     }
 
+    public void btnCustomerOnAction ( ActionEvent actionEvent ) {
+        setUI( "ManageCustomerForm.fxml" );
+    }
 }

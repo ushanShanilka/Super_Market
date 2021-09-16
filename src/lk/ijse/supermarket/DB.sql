@@ -14,8 +14,8 @@ create table User(
 
 create table Customer(
 	id Varchar (50) primary key,
-	name varchar (20) not null,
 	customerType VARCHAR (45),
+	name varchar (20) not null,
 	address VARCHAR (45),
 	city VARCHAR (45),
 	province VARCHAR (45),

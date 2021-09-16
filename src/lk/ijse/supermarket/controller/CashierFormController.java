@@ -8,6 +8,7 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -18,17 +19,17 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import lk.ijse.supermarket.model.*;
+import lk.ijse.supermarket.view.tm.CustomerTM;
 import lk.ijse.supermarket.view.tm.TempOrderTM;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -75,19 +76,34 @@ public class CashierFormController {
 
     static ArrayList< TempTable > tempTableArray = new ArrayList<>( );
 
+    public void initialize(){
+        colPropertyId.setCellValueFactory( new PropertyValueFactory<>( "propertyId" ) );
+        colProductName.setCellValueFactory( new PropertyValueFactory<>( "productName" ) );
+        colUnitPrice.setCellValueFactory( new PropertyValueFactory<>( "unitPrice" ) );
+        colQty.setCellValueFactory( new PropertyValueFactory<>( "qty" ) );
+        colDiscount.setCellValueFactory( new PropertyValueFactory<>( "discount" ) );
+        colTotal.setCellValueFactory( new PropertyValueFactory<>( "total" ) );
+        colOption.setCellValueFactory( new PropertyValueFactory<>( "btn" ) );
+
+        getAllPropertyId();
+        generateDateTime();
+        setOrderId();
+        setCustomerId();
+        lblCashierId.setText(  CashierLoginFormController.userId );
+        setBtnValid(true);
+    }
+
     public void btnAddOnAction ( ActionEvent actionEvent ) {
-        if (Pattern.compile( "^[A-Z]{1}[0-9]{1,5}" ).matcher( txtCusId.getText( ) ).matches( )) {
+        if (Pattern.compile( "^(C)[0-9]{1,5}" ).matcher( txtCusId.getText( ) ).matches( )) {
             if (Pattern.compile( "^[A-z]{1,10}" ).matcher( txtCusType.getText( ) ).matches( )) {
-                if (Pattern.compile( "^[A-z]{1,8}" ).matcher( txtCusName.getText( ) ).matches( )) {
-                    if (Pattern.compile( "^[A-z]{1,10}" ).matcher( txtCusAddress.getText( ) ).matches( )) {
-                        if (Pattern.compile( "^[A-z]{1,9}" ).matcher( txtCusCity.getText( ) ).matches( )) {
-                            if (Pattern.compile( "^[A-z]{1,9}" ).matcher( txtCusProvince.getText( ) ).matches( )) {
+                if (Pattern.compile( "^[A-z]{1,20}" ).matcher( txtCusName.getText( ) ).matches( )) {
+                    if (Pattern.compile( "^[A-z]{1,20}(, )[A-z]{1,20}" ).matcher( txtCusAddress.getText( ) ).matches( )) {
+                        if (Pattern.compile( "^[A-z]{1,20}" ).matcher( txtCusCity.getText( ) ).matches( )) {
+                            if (Pattern.compile( "^[A-z]{1,10}" ).matcher( txtCusProvince.getText( ) ).matches( )) {
                                 if (Pattern.compile( "^[0-9]{9,10}" ).matcher( txtCusContact.getText( ) ).matches( )) {
-                                    if (Pattern.compile( "^[A-z]{1,10}( )[A-z]{1,10}" ).matcher( txtProductName.getText( ) ).matches( )) {
+                                    if (Pattern.compile( "^[A-z]{1,20}( )[A-z]{1,20}" ).matcher( txtProductName.getText( ) ).matches( )) {
                                         if (Pattern.compile( "^[0-9]{1,10}" ).matcher( txtOrderQty.getText( ) ).matches( )) {
                                             String date = lblDate.getText( );
-                                            String time = lblTime.getText( );
-                                            String dateAndTime = (date + "/" + time);
                                             String cashierId = CashierLoginFormController.userId;
 
                                             int qty = Integer.parseInt( txtOrderQty.getText( ) );
@@ -99,7 +115,7 @@ public class CashierFormController {
 
                                             TempData tempData = new TempData(
                                                     txtOrderId.getText( ) ,
-                                                    dateAndTime ,
+                                                    date ,
                                                     txtCusId.getText( ) ,
                                                     txtCusType.getText( ) ,
                                                     txtCusName.getText( ) ,
@@ -153,6 +169,8 @@ public class CashierFormController {
                                             }
                                             getAllProcessingOrder( );
                                             generateTotal( );
+                                            txtOrderQty.setText("");
+                                            setBtnValid(false);
                                         }else {
                                             txtOrderQty.setFocusColor( Paint.valueOf( "red" ) );
                                             txtOrderQty.requestFocus( );
@@ -193,9 +211,19 @@ public class CashierFormController {
 
     public void btnConfirmOnAction ( ActionEvent actionEvent ) {
         try{
+            int tempId = Integer.parseInt( txtOrderId.getText().split( "O" )[ 1 ] );
+            tempId+=1;
+            if (tempId < 10){
+                txtOrderId.setText("O00"+tempId);
+            }else if (tempId<100){
+                txtOrderId.setText("O0"+tempId);
+            }
+
             getAllOrderIdFromArray();
             getAllPropertyId();
             clear();
+            tblTempOrder.setItems( null );
+            setBtnValid(true);
         }catch ( NullPointerException e ){
 
         }
@@ -288,7 +316,7 @@ public class CashierFormController {
                 Integer.parseInt( txtCusContact.getText( ) )
         );
         ArrayList< Order > orders = new ArrayList<>( );
-        Order order = new Order( txtOrderId.getText( ) , lblDate.getText( ) + "/" + lblTime.getText( ) , Double.parseDouble( lblTotal.getText( ) ) , txtCusId.getText( ) , Integer.parseInt( lblCashierId.getText( ) ) );
+        Order order = new Order( txtOrderId.getText( ) , lblDate.getText(), Double.parseDouble( lblTotal.getText( ) ) , txtCusId.getText( ) , Integer.parseInt( lblCashierId.getText( ) ) );
         orders.add(order);
         customer.setOrders(orders);
 
@@ -307,7 +335,8 @@ public class CashierFormController {
                 new Alert( Alert.AlertType.CONFIRMATION,"Success ! " ).show();
                 getAllOrderIdFromArray();
                 getAllProcessingOrder();
-                tblTempOrder.refresh();
+                clear();
+                tblTempOrder.setItems(null);
             }else {
                 new Alert( Alert.AlertType.WARNING,"Fail !" ).show();
             }
@@ -325,12 +354,14 @@ public class CashierFormController {
 
     public void btnNewOnAction ( ActionEvent actionEvent ) {
         clear();
+        setOrderId();
+        setBtnValid(true);
         txtCusType.requestFocus();
     }
 
     public void searchCustomerOnAction ( ActionEvent actionEvent ) {
         try {
-            Customer customer = new CashierController( ).getCustomer( txtCusId.getText( ) );
+            Customer customer = new CustomerController( ).getCustomer( txtCusId.getText( ) );
             if (customer!=null){
                 txtCusType.setText( customer.getCusType() );
                 txtCusName.setText( customer.getCusName() );
@@ -348,22 +379,6 @@ public class CashierFormController {
         }
     }
 
-    public void initialize(){
-        colPropertyId.setCellValueFactory( new PropertyValueFactory<>( "propertyId" ) );
-        colProductName.setCellValueFactory( new PropertyValueFactory<>( "productName" ) );
-        colUnitPrice.setCellValueFactory( new PropertyValueFactory<>( "unitPrice" ) );
-        colQty.setCellValueFactory( new PropertyValueFactory<>( "qty" ) );
-        colDiscount.setCellValueFactory( new PropertyValueFactory<>( "discount" ) );
-        colTotal.setCellValueFactory( new PropertyValueFactory<>( "total" ) );
-        colOption.setCellValueFactory( new PropertyValueFactory<>( "btn" ) );
-
-        getAllPropertyId();
-        generateDateTime();
-        setOrderId();
-        setCustomerId();
-        lblCashierId.setText(  CashierLoginFormController.userId );
-    }
-
     private void setOrderId(){
         try {
             String s = new CashierController( ).generateOrderId( );
@@ -378,7 +393,7 @@ public class CashierFormController {
 
     private void setCustomerId(){
         try {
-            String s = new CashierController( ).generateCustomerId( );
+            String s = new CustomerController().generateCustomerId( );
             txtCusId.setText( s );
         } catch ( SQLException throwables ) {
             throwables.printStackTrace( );
@@ -501,8 +516,13 @@ public class CashierFormController {
         }
     }
 
+    private void setBtnValid(boolean x){
+        btnPlaceOrder.setDisable(x);
+        btnConfirm.setDisable(x);
+        btnCancel.setDisable(x);
+    }
+
     private void clear(){
-        setOrderId();
         setCustomerId();
         txtCusType.setText( "" );
         txtCusName.setText( "" );

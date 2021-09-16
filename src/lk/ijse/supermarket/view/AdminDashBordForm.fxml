@@ -13,7 +13,7 @@
    <children>
       <AnchorPane prefHeight="65.0" prefWidth="641.0" style="-fx-background-color: #dfe6e9;">
          <children>
-            <JFXButton fx:id="btnSystemReports" focusTraversable="false" layoutX="73.0" layoutY="14.0" onAction="#btnSystemReportsOnAction" prefHeight="39.0" prefWidth="125.0" style="-fx-border-color: black;" text="System Repots">
+            <JFXButton fx:id="btnSystemReports" focusTraversable="false" layoutX="73.0" layoutY="14.0" onAction="#btnSystemReportsOnAction" prefHeight="39.0" prefWidth="119.0" style="-fx-border-color: black;" text="System Repots">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
@@ -21,7 +21,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </JFXButton>
-            <JFXButton fx:id="btnManageProduct" focusTraversable="false" layoutX="216.0" layoutY="14.0" onAction="#btnManageProductOnAction" prefHeight="39.0" prefWidth="133.0" style="-fx-border-color: black;" text="Manage Product">
+            <JFXButton fx:id="btnManageProduct" focusTraversable="false" layoutX="215.0" layoutY="14.0" onAction="#btnManageProductOnAction" prefHeight="39.0" prefWidth="93.0" style="-fx-border-color: black;" text="Product">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
@@ -29,7 +29,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </JFXButton>
-            <JFXButton fx:id="btnManageItem" focusTraversable="false" layoutX="369.0" layoutY="14.0" onAction="#btnManageItemOnAction" prefHeight="39.0" prefWidth="110.0" style="-fx-border-color: black;" text="Manage Item">
+            <JFXButton fx:id="btnManageItem" focusTraversable="false" layoutX="331.0" layoutY="14.0" onAction="#btnManageItemOnAction" prefHeight="39.0" prefWidth="74.0" style="-fx-border-color: black;" text="Batch">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
@@ -37,7 +37,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </JFXButton>
-            <JFXButton fx:id="btnManageCashiers" focusTraversable="false" layoutX="494.0" layoutY="14.0" onAction="#btnManageCashiersOnAction" prefHeight="39.0" prefWidth="139.0" style="-fx-border-color: black;" text="Manage Cashiers">
+            <JFXButton fx:id="btnManageCashiers" focusTraversable="false" layoutX="540.0" layoutY="14.0" onAction="#btnManageCashiersOnAction" prefHeight="39.0" prefWidth="93.0" style="-fx-border-color: black;" text="Cashiers">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
@@ -50,6 +50,14 @@
                   <Image url="@../assets/left_arrow_26px.png" />
                </image>
             </ImageView>
+            <JFXButton fx:id="btnCustomer" focusTraversable="false" layoutX="424.0" layoutY="14.0" onAction="#btnCustomerOnAction" prefHeight="39.0" prefWidth="100.0" style="-fx-border-color: black;" text="Customer">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </JFXButton>
          </children>
       </AnchorPane>
       <AnchorPane fx:id="root" layoutY="73.0" prefHeight="499.0" prefWidth="641.0">

@@ -75,12 +75,8 @@ public class ManageUserFormController {
 
     private void setUserId(){
         try {
-            ResultSet rst = new UserController( ).generateUserId( );
-            if (rst.next()){
-                int tempId = rst.getInt( 1 );
-                tempId = tempId+1;
-                txtUserId.setText( String.valueOf( tempId ) );
-            }
+            int i = new UserController( ).generateUserId( );
+            txtUserId.setText( String.valueOf( i ) );
         } catch ( SQLException throwables ) {
             throwables.printStackTrace( );
         } catch ( ClassNotFoundException e ) {

@@ -19,18 +19,8 @@
          </font>
       </Label>
       <JFXTextField fx:id="txtUserId" editable="false" layoutX="56.0" layoutY="112.0" onAction="#searchUserOnAction" prefHeight="25.0" prefWidth="108.0" promptText="User Id" />
-      <Label fx:id="lblUserId" layoutX="56.0" layoutY="137.0" prefHeight="17.0" prefWidth="83.0" text="Eg -:  001" textFill="RED">
-         <font>
-            <Font size="10.0" />
-         </font>
-      </Label>
       <JFXTextField fx:id="txtUserName" layoutX="200.0" layoutY="112.0" prefHeight="25.0" prefWidth="173.0" promptText="User Name" />
       <JFXPasswordField fx:id="txtPassword" layoutX="415.0" layoutY="112.0" prefHeight="25.0" prefWidth="173.0" promptText="Password" />
-      <Label fx:id="lblUserName" layoutX="200.0" layoutY="137.0" prefHeight="17.0" prefWidth="83.0" text="Eg -:  Saman" textFill="RED">
-         <font>
-            <Font size="10.0" />
-         </font>
-      </Label>
       <JFXCheckBox fx:id="chetActiveState" layoutX="56.0" layoutY="190.0" text="Active State" />
       <JFXTextField fx:id="txtUserType" layoutX="200.0" layoutY="187.0" prefHeight="25.0" prefWidth="173.0" promptText="User Type" />
       <JFXButton fx:id="btnSave" layoutX="316.0" layoutY="240.0" onAction="#btnSaveOnAction" prefHeight="25.0" prefWidth="77.0" style="-fx-border-color: black; -fx-background-color: #00b894;" text="Save" textFill="WHITE">

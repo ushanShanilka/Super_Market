@@ -13,15 +13,18 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class CashierController {
+    CustomerController customerController = new CustomerController( );
+
     Connection connection = null;
     public boolean saveCustomer( Customer customer ) throws SQLException {
+
         try {
             connection = DBConnection.getInstance().getConnection();
             connection.setAutoCommit( false );
             PreparedStatement pst = connection.prepareStatement( "INSERT INTO Customer VALUES (?,?,?,?,?,?,?)" );
-            Customer customer1 = getCustomer( customer.getCusId( ) );
-            if (customer1!=null){
-                boolean isUpdate = updateCustomer( customer );
+            Customer customer2 = customerController.getCustomer( customer.getCusId( ) );
+            if (customer2!=null){
+                boolean isUpdate = customerController.updateCustomer( customer );
                 if (isUpdate){
                     boolean b = saveOrder( customer.getOrders( ));
                     if (b){
@@ -62,33 +65,7 @@ public class CashierController {
         }finally {
             connection.setAutoCommit( true );
         }
-
         return false;
-
-    }
-
-    public Customer getCustomer(String id) throws SQLException, ClassNotFoundException {
-        ResultSet rst = CrudUtil.execute( "SELECT * FROM Customer WHERE id=?" , id );
-        while (rst.next()){
-            return new Customer(
-                    rst.getString( 1 ),
-                    rst.getString( 2 ),
-                    rst.getString( 3 ),
-                    rst.getString( 4 ),
-                    rst.getString( 5 ),
-                    rst.getString( 6 ),
-                    rst.getInt(7 )
-            );
-        }
-        return null;
-    }
-
-    public boolean updateCustomer(Customer customer) throws SQLException, ClassNotFoundException {
-        return CrudUtil.execute( "UPDATE Customer SET name=?, customerType=?, address=?, city=?, province=?, contact=? WHERE id=?" ,
-                                           customer.getCusName( ) , customer.getCusType( ) ,
-                                           customer.getCusAddress( ) , customer.getCusCity( ) ,
-                                           customer.getCusProvince( ) , customer.getCusContact( ),
-                                            customer.getCusId());
     }
 
     public boolean saveOrder( ArrayList< Order > orders) throws SQLException, ClassNotFoundException {
@@ -101,16 +78,17 @@ public class CashierController {
             pstm.setObject( 5 , order.getUserId());
             boolean isSaved = pstm.executeUpdate()>0;
             if (isSaved){
-                if (saveOrderDetail( order.getDetails( ) )){
-
-                }else {
-                    return false;
-                }
+                    if (saveOrderDetail( order.getDetails( ) )){
+                        connection.commit();
+                    }else {
+                        connection.rollback();
+                        return false;
+                    }
             }else {
+                connection.rollback();
                 return false;
             }
         }
-
         return true;
     }
 
@@ -157,17 +135,5 @@ public class CashierController {
         return "O001";
     }
 
-    public String generateCustomerId() throws SQLException, ClassNotFoundException {
-        ResultSet rst= CrudUtil.execute( "SELECT id FROM Customer Order By id DESC LIMIT 1" );
-        if (rst.next()){
-            int tempId = Integer.parseInt( rst.getString( 1 ).split( "C" )[ 1 ] );
-            tempId+=1;
-            if (tempId < 99){
-                return "C00"+tempId;
-            }else {
-                return "O0"+tempId;
-            }
-        }
-        return "C001";
-    }
+
 }
